@@ -1,0 +1,66 @@
+ html {
+        background-color: transparent;
+		width: 260mm;
+		height: 347mm;
+      }
+	  
+  body {
+	background-color: white;
+	border: 0px;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+	min-width: 100%;
+	min-height: 100%;
+  }
+  
+  table {
+	border: none;
+	margin: 0;
+	padding: 0;
+  }
+  
+  td, th {
+	border: none;
+	margin: 0;
+	padding: 0;
+  }
+  
+  table.maintable {
+	max-width: 210mm;
+	margin: 0;
+	padding: 0;
+	border-spacing: 0px;
+	border-collapse: collapse; 
+	/*border-collapse: separate;*/
+	table-layout:fixed;
+	border: 1px dashed grey;
+  }
+  
+  th.main {
+	display: none;
+  }
+  
+  td.main {
+	/*min-width: 35.6mm;
+	max-width: 35.6mm;*/
+	min-height: 16.9mm;
+	max-height: 16.9mm;
+	border: 0.1mm solid #000000;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	word-wrap:break-word;
+	font-size: 5pt;
+	vertical-align: middle;
+  }
+  
+  img.qrcode {
+	width: 1cm;
+  }
+  
+  #header {
+	/*position: absolute;*/
+	top: 0px; 
+	font-weight: bold;
+  }

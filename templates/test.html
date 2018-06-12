@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Flying Saucer: CSS List Support</title>
+    <link rel="stylesheet" type="text/css" href="general.css" title="Style" media="screen" />
+    <style>
+      html {
+        background-color: transparent;
+		width: 260mm;
+		height: 347mm;
+      }
+      body {
+        background-color: white;
+        border: 0px;
+        margin: 0;
+        padding: 0;
+        text-align: left;
+		min-width: 100%;
+		min-height: 100%;
+      }
+	  
+	  table {
+		border: none;
+		margin: 0;
+		padding: 0;
+	  }
+	  
+	  td, th {
+		border: none;
+		margin: 0;
+		padding: 0;
+	  }
+	  
+	  table.maintable {
+		max-width: 210mm;
+		margin: 0;
+		padding: 0;
+		border-spacing: 0px;
+		border-collapse: collapse; 
+		/*border-collapse: separate;*/
+		table-layout:fixed;
+	  }
+	  th.main {
+		display: none;
+	  }
+	  td.main {
+		min-width: 35.6mm;
+		max-width: 35.6mm;
+		min-height: 16.9mm;
+		max-height: 16.9mm;
+		border: 0.1mm solid #000000;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		word-wrap:break-word;
+		font-size: 5pt;
+		vertical-align: middle;
+	  }
+	  .qrcode {
+		width: 1cm;
+	  }
+	  #header {
+		/*position: absolute;*/
+		top: 0px; 
+		font-weight: bold;
+	  }
+    </style>
+  </head>
+  <body>
+	<div id="header">This is my test sheet with cool labels</div>
+    <table class="maintable">
+		<tbody>
+	<tr>
+		<th>TEST1</th><th>TEST2</th><th>TEST3</th><th>TEST4</th><th>TEST5</th>
+	</tr>
+	<tr>
+		<td class="main">
+			<table id="subtable">
+				<tr><td class="sub"><img class="qrcode" src="file:///C:/Daten/BarCoder/Code-Images/MFNB_Col_D011___10.png"/></td>
+					<td class="sub">TEST test 123</td>
+				</tr>
+			</table>
+		</td>
+		<td class="main">World jdhfks dhfksh dkfjhskjhdfksjhdiusarrrrrrhdgiushdgiu shdighsi dufh isaudfflggksödlkg söldkgdlkögöls dkgösäö ösdljs lfjsdlkf jslkdjf lskdjf Falko</td><td class="main">Hello</td><td class="main">World</td><td class="main">Hello</td><td class="main">World</td>
+	</tr>
+	<tr>
+		<td class="main">Hello</td><td class="main">World</td><td class="main">Hello</td><td class="main">World</td><td class="main">Hello</td><td class="main">World</td>
+	</tr>
+	<tr>
+		<td class="main">Hello</td><td class="main">World</td><td class="main">Hello</td><td class="main">World</td><td class="main">Hello</td><td class="main">World</td>
+	</tr>
+
+		</tbody>
+	</table>
+  </body>
+</html>

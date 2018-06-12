@@ -1,0 +1,176 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.dina</groupId>
+	<artifactId>labels</artifactId>
+	<version>1.0</version>
+	<name>label creator</name>
+	<packaging>jar</packaging>
+	<build>
+		<finalName>dina-labels</finalName>
+		<plugins>
+			
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>mvnrepo</id>
+			<name>MVNRepository</name>
+			<url>http://mvnrepository.com</url>
+		</repository>
+	</repositories>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- Define the version of OPEN HTML TO PDF in the properties section of 
+			your POM. -->
+		<openhtml.version>0.0.1-RC11</openhtml.version>
+
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.sparkjava</groupId>
+			<artifactId>spark-core</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.21</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sparkjava</groupId>
+			<artifactId>spark-kotlin</artifactId>
+			<version>1.0.0-alpha</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>2.0.2</version>
+			<type>maven-plugin</type>
+		</dependency>
+
+
+		<dependency>
+			<!-- ALWAYS required. -->
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-core</artifactId>
+			<version>0.0.1-RC11</version>
+		</dependency>
+
+		<dependency>
+			<!-- Required for PDF output. -->
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-pdfbox</artifactId>
+			<version>0.0.1-RC11</version>
+		</dependency>
+
+		<dependency>
+			<!-- Required for image output only. -->
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-java2d</artifactId>
+			<version>0.0.1-RC11</version>
+		</dependency>
+
+		<dependency>
+			<!-- Optional, leave out if you do not need right-to-left or bi-directional 
+				text support. -->
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-rtl-support</artifactId>
+			<version>0.0.1-RC11</version>
+		</dependency>
+
+		<dependency>
+			<!-- Optional, leave out if you do not need HTML5 parsing support. -->
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-jsoup-dom-converter</artifactId>
+			<version>0.0.1-RC11</version>
+		</dependency>
+
+		<dependency>
+			<!-- Optional, leave out if you do not need logging via slf4j. -->
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-slf4j</artifactId>
+			<version>0.0.1-RC11</version>
+		</dependency>
+
+		<dependency>
+			<!-- Optional, leave out if you do not need logging via log4j. -->
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-log4j</artifactId>
+			<version>0.0.1-RC11</version>
+		</dependency>
+
+		<dependency>
+			<!-- Optional, leave out if you do not SVG support. -->
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-svg-support</artifactId>
+			<version>${openhtml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>1.4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>2.2.3</version>
+			<classifier>jdk15</classifier>
+		</dependency>
+		<!-- reflection -->
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>0.9.10</version>
+		</dependency>
+		<!-- swagger -->
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-core</artifactId>
+			<version>1.5.8</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-jaxrs</artifactId>
+			<version>1.5.8</version>
+		</dependency>
+		<!-- jax rs annotations -->
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+	</dependencies>
+</project>

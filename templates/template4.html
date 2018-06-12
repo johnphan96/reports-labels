@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Flying Saucer: CSS List Support</title>
+    <link rel="stylesheet" type="text/css" href="general.css" title="Style" media="screen" />
+    <style>
+      html {
+        background-color: transparent;
+		width: 260mm;
+		height: 347mm;
+      }
+      body {
+        background-color: white;
+        border: 0px;
+        margin: 0;
+        padding: 0;
+        text-align: left;
+		min-width: 100%;
+		min-height: 100%;
+      }
+	  
+	  table {
+		border: none;
+		margin: 0;
+		padding: 0;
+	  }
+	  
+	  td, th {
+		border: none;
+		margin: 0;
+		padding: 0;
+	  }
+	  
+	  table.maintable {
+		max-width: 210mm;
+		margin: 0;
+		padding: 0;
+		border-spacing: 0px;
+		border-collapse: collapse; 
+		/*border-collapse: separate;*/
+		table-layout:fixed;
+	  }
+	  th.main {
+		display: none;
+	  }
+	  td.main {
+		min-width: 90mm;
+		max-width: 90mm;
+		min-height: 6.2mm;
+		max-height: 6.2mm;
+		border: 0.1mm solid #000000;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		word-wrap:break-word;
+		font-size: 5pt;
+		vertical-align: middle;
+	  }
+	  .qrcode {
+		width: 2.5cm;
+		margin: 2mm;
+	  }
+	  #header {
+		/*position: absolute;*/
+		top: 0px; 
+		text-align: center;
+		font-weight: bold;
+		font-size: 2em;
+		margin-bottom: 3mm;
+		max-width: 70%;
+	  }
+	  .species {
+			text-align: right;
+			padding-left: 10mm;
+	  }
+	  a {
+		text-decoration: none;
+	  }
+	  li.odd {
+		background-color: #DDD;
+	  }
+	  li.even {
+		background-color: #FFF;
+	  }
+    </style>
+  </head>
+  <body>
+	<div id="header">Collection Object List </div>
+    <ul class="maintable">
+		
+{{{START REPEAT}}}
+	<!-- {{{LABEL COUNTER}}} -->
+	<li class="odd">
+			<table id="subtable">
+				<tr>
+					<td class="sub"><a href="http://coll.mfn-berlin.de/u/{{inventoryNumber}}" target="_blank">{{inventoryNumber}}</a></td>
+					<td class="species"><strong><i>{{SpeciesName}}</i></strong></td>
+				</tr>
+			</table>
+	</li>
+	<!-- {{{LABEL COUNTER}}} -->
+	<li class="even">
+			<table id="subtable">
+				<tr>
+					<td class="sub"><a href="http://coll.mfn-berlin.de/u/{{inventoryNumber}}" target="_blank">{{inventoryNumber}}</a></td>
+					<td class="species"><strong><i>{{SpeciesName}}</i></strong></td>
+				</tr>
+			</table>
+	</li>
+
+{{{END REPEAT}}}
+	</ul>
+  </body>
+</html>
