@@ -4,7 +4,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import org.eclipse.jetty.http.HttpStatus;
+//import org.eclipse.jetty.http.HttpStatus;
 
 import dina.LabelCreator.Options.Options;
 import dina.api.ApiResponseCode;

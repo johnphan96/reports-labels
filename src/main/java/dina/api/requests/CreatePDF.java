@@ -3,6 +3,8 @@ package dina.api.requests;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,6 +19,8 @@ public class CreatePDF {
 	private Options op;
 	private Request req;
 	private Response res;
+
+	private List<String> codesForCleanUp = new ArrayList<>();
 	
 	public CreatePDF(Options options, Request request, Response response) {
 		op = options;
@@ -27,12 +31,14 @@ public class CreatePDF {
 	public HttpServletResponse result() throws IOException {
 		   
 			if(req.queryParams("template")!=null)
-				op.templateFile = "templates/"+req.queryParams("template");
+				op.templateFile = op.templateDir+"/"+req.queryParams("template");
 		
-		   LabelCreator labels = new LabelCreator(op);
+		   LabelCreator labels = new LabelCreator(op, req.queryParams("data"));
 		   labels.baseURL = "http://"+req.host()+req.pathInfo();
-		   labels.jsonData = req.queryParams("data");
      	   labels.createPDF();
+     	   
+     	   if(op.debug)
+     		   System.out.println("Reading PDF: "+Paths.get(op.outputFile));
      	   
      	   byte[] bytes = Files.readAllBytes(Paths.get(op.outputFile));         
            HttpServletResponse raw = res.raw();
@@ -42,5 +48,10 @@ public class CreatePDF {
             raw.getOutputStream().close();
             
             return res.raw();
+	}
+	
+	public List<String> getCleanUp(){
+		
+		return codesForCleanUp;
 	}
 }

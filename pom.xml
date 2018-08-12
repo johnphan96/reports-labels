@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dina</groupId>
 	<artifactId>labels</artifactId>
@@ -41,7 +40,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- Define the version of OPEN HTML TO PDF in the properties section of 
 			your POM. -->
-		<openhtml.version>0.0.1-RC11</openhtml.version>
+		<openhtml.version>0.0.1-RC14</openhtml.version>
 
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -52,22 +51,22 @@
 		<dependency>
 			<groupId>com.sparkjava</groupId>
 			<artifactId>spark-core</artifactId>
-			<version>2.6.0</version>
+			<version>2.7.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.7.21</version>
 		</dependency>
-		<dependency>
+		<!--  >dependency>
 			<groupId>com.sparkjava</groupId>
 			<artifactId>spark-kotlin</artifactId>
 			<version>1.0.0-alpha</version>
-		</dependency>
+		</dependency-->
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox</artifactId>
-			<version>2.0.2</version>
+			<version>2.0.11</version>
 			<type>maven-plugin</type>
 		</dependency>
 
@@ -76,21 +75,21 @@
 			<!-- ALWAYS required. -->
 			<groupId>com.openhtmltopdf</groupId>
 			<artifactId>openhtmltopdf-core</artifactId>
-			<version>0.0.1-RC11</version>
+			<version>${openhtml.version}</version>
 		</dependency>
 
 		<dependency>
 			<!-- Required for PDF output. -->
 			<groupId>com.openhtmltopdf</groupId>
 			<artifactId>openhtmltopdf-pdfbox</artifactId>
-			<version>0.0.1-RC11</version>
+			<version>${openhtml.version}</version>
 		</dependency>
 
 		<dependency>
 			<!-- Required for image output only. -->
 			<groupId>com.openhtmltopdf</groupId>
 			<artifactId>openhtmltopdf-java2d</artifactId>
-			<version>0.0.1-RC11</version>
+			<version>${openhtml.version}</version>
 		</dependency>
 
 		<dependency>
@@ -98,28 +97,28 @@
 				text support. -->
 			<groupId>com.openhtmltopdf</groupId>
 			<artifactId>openhtmltopdf-rtl-support</artifactId>
-			<version>0.0.1-RC11</version>
+			<version>${openhtml.version}</version>
 		</dependency>
 
 		<dependency>
 			<!-- Optional, leave out if you do not need HTML5 parsing support. -->
 			<groupId>com.openhtmltopdf</groupId>
 			<artifactId>openhtmltopdf-jsoup-dom-converter</artifactId>
-			<version>0.0.1-RC11</version>
+			<version>${openhtml.version}</version>
 		</dependency>
 
 		<dependency>
 			<!-- Optional, leave out if you do not need logging via slf4j. -->
 			<groupId>com.openhtmltopdf</groupId>
 			<artifactId>openhtmltopdf-slf4j</artifactId>
-			<version>0.0.1-RC11</version>
+			<version>${openhtml.version}</version>
 		</dependency>
 
 		<dependency>
 			<!-- Optional, leave out if you do not need logging via log4j. -->
 			<groupId>com.openhtmltopdf</groupId>
 			<artifactId>openhtmltopdf-log4j</artifactId>
-			<version>0.0.1-RC11</version>
+			<version>${openhtml.version}</version>
 		</dependency>
 
 		<dependency>
@@ -172,5 +171,17 @@
 			<artifactId>javax.ws.rs-api</artifactId>
 			<version>2.0.1</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/net.sf.jtidy/jtidy -->
+		<dependency>
+		    <groupId>net.sf.jtidy</groupId>
+		    <artifactId>jtidy</artifactId>
+		    <version>r938</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.eclipse.jetty</groupId>
+		    <artifactId>jetty-server</artifactId>
+		    <version>9.4.9.v20180320</version>
+		</dependency> 
 	</dependencies>
 </project>

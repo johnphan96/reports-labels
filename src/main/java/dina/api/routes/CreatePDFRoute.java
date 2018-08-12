@@ -50,8 +50,8 @@ public class CreatePDFRoute implements Route {
 		
 		spark.Spark.get("/pdf", (req, res) -> {
 			 CreatePDF c = new CreatePDF(op, req, res);
-	           return c.result();
-			// return "Please use POST method.";
+	        //   return c.result();
+			 return "Please use POST method.";
 	     });
 	}
 	

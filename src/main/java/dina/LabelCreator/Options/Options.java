@@ -1,24 +1,36 @@
 package dina.LabelCreator.Options;
 
-import com.openhtmltopdf.pdfboxout.PdfRendererBuilder.PageSizeUnits;
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
-import dina.LabelCreator.Helper.Helper;;
+import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.PageSizeUnits;
+import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+
+import dina.LabelCreator.Helper.Helper;
 
 public class Options 
 {
 	// set default values
-	public String templateFile 			= "templates/template.html";
-	public String outputFile 			= "labels.pdf";
+	public boolean debug				= false;
+	public String templateFile 			= "template.html";
+	public String outputFile 			= "tmp/labels.pdf";
 	public String tmpDir 				= "tmp";
+	public String tmpPath				= "tmp";
+	public String baseURL 				= "";
 	public float pageWidth 				= 210;
 	public float pageHeight 			= 297;
-	public PageSizeUnits pageUnit 		= PageSizeUnits.MM;
+	public static PageSizeUnits pageUnit = PageSizeUnits.MM;
 	public String sizeUnit 				= "mm";
 	public int codeWidth;
 	public int codeHeight;
+	public String templateDir			= "templates";
+	public boolean sessionIsSet         = false;;
 	
 	public Options() {
-		
+		templateFile = templateDir+"/"+templateFile;
 	}
 	
 	public void setOptions(String[] options) {
@@ -33,6 +45,9 @@ public class Options
 			
 			if(options[i]=="tmpDir")
 				tmpDir = Helper.parseArgs(options, "tmpDir").trim();
+			
+			if(options[i]=="baseURL")
+				baseURL = Helper.parseArgs(options, "baseURL").trim();
 			
 			if(options[i]=="pageWidth")
 				pageWidth =  Float.parseFloat(Helper.parseArgs(options, "pageWidth").trim());
@@ -57,5 +72,27 @@ public class Options
 			
 		}
 		
+	}
+	
+	public void cleanUp() {
+	
+		Long now = System.currentTimeMillis();
+		Long deleteAfter = new Long(300000); //5 minutes
+		final File folder = new File(tmpDir);
+		
+		for (final File fileEntry : folder.listFiles()) {
+	        if (fileEntry.isDirectory()) {
+	            // skip
+	        } else {
+	        	//check timestamp
+	        	//System.out.println("delete tmp file: "+fileEntry.lastModified()+"    "+fileEntry.getName()+"\nnow:"+now);
+	        	if((fileEntry.lastModified()+deleteAfter)<now)
+	        	{
+	        		if(debug)
+	        			System.out.println("delete tmp file: "+fileEntry.getName());
+	        		fileEntry.delete();
+	        	}
+	        }
+	    }
 	}
 }

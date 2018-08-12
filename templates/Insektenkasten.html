@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Flying Saucer: CSS List Support</title>
+    <!--link rel="stylesheet" type="text/css" href="general.css" title="Style" media="screen" /-->
+    <style>
+      html {
+        background-color: transparent;
+		width: 260mm;
+		height: 347mm;
+      }
+      body {
+        background-color: white;
+        border: 0px;
+        margin: 0;
+        padding: 0;
+        text-align: left;
+		min-width: 100%;
+		min-height: 100%;
+      }
+	  
+	  table {
+		border: none;
+		margin: 0;
+		padding: 0;
+	  }
+	  
+	  td, th {
+		border: none;
+		margin: 0;
+		padding: 0;
+	  }
+	  
+	  table.maintable {
+		max-width: 210mm;
+		margin: 0;
+		padding: 0;
+		border-spacing: 0px;
+		border-collapse: collapse; 
+		/*border-collapse: separate;*/
+		table-layout:fixed;
+	  }
+	  th.main {
+		display: none;
+	  }
+	  td.main {
+		min-width: 35.6mm;
+		max-width: 35.6mm;
+		min-height: 16.9mm;
+		max-height: 16.9mm;
+		border: 0.1mm solid #000000;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		word-wrap:break-word;
+		font-size: 5pt;
+		vertical-align: middle;
+	  }
+	  .qrcode {
+		width: 1.5cm;
+	  }
+	  #header {
+		/*position: absolute;*/
+		top: 0px; 
+		font-weight: bold;
+	  }
+    </style>
+  </head>
+  <body>
+    <table class="maintable">
+		<tbody>
+
+<!-- {{{START REPEAT}}} -->
+	<tr>
+		<!-- {{{START LABEL}}} -->
+		<td class="main">
+			<table id="subtable">
+				<tr><td class="sub"><img class="qrcode" src="{{%QR-Code http://coll.mfn-berlin.de/u/{{reservedText}}|{{reservedText}}%}}"/></td>
+					<td class="sub">{{reservedText}} {{taxon}} {{Species}}</td>
+				</tr>
+			</table>
+		</td>
+		<!-- {{{END LABEL}}} -->
+		<!-- {{{START LABEL}}} -->
+		<td class="main">
+			<table id="subtable">
+				<tr><td class="sub"><img class="qrcode" src="{{%QR-Code http://coll.mfn-berlin.de/u/{{reservedText}}|{{reservedText}}%}}"/></td>
+					<td class="sub">{{reservedText}} {{taxon}} {{Species}}</td>
+				</tr>
+			</table>
+		</td>
+		<!-- {{{END LABEL}}} -->
+		<!-- {{{START LABEL}}} -->
+		<td class="main">
+			<table id="subtable">
+				<tr><td class="sub"><img class="qrcode" src="{{%QR-Code http://coll.mfn-berlin.de/u/{{reservedText}}|{{reservedText}}%}}"/></td>
+					<td class="sub">{{reservedText}} {{taxon}} {{Species}}</td>
+				</tr>
+			</table>
+		</td>
+		<!-- {{{END LABEL}}} -->
+		<!-- {{{START LABEL}}} -->
+		<td class="main">
+			<table id="subtable">
+				<tr><td class="sub"><img class="qrcode" src="{{%QR-Code http://coll.mfn-berlin.de/u/{{reservedText}}|{{reservedText}}%}}"/></td>
+					<td class="sub">{{reservedText}} {{taxon}} {{Species}}</td>
+				</tr>
+			</table>
+		</td>
+		<!-- {{{END LABEL}}} -->
+		<!-- {{{START LABEL}}} -->
+		<td class="main">
+			<table id="subtable">
+				<tr><td class="sub"><img class="qrcode" src="{{%QR-Code http://coll.mfn-berlin.de/u/{{reservedText}}|{{reservedText}}%}}"/></td>
+					<td class="sub">{{reservedText}} {{taxon}} {{Species}}</td>
+				</tr>
+			</table>
+		</td>
+		<!-- {{{END LABEL}}} -->
+	</tr>
+<!-- {{{END REPEAT}}} -->
+		</tbody>
+	</table>
+  </body>
+</html>

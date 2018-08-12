@@ -7,14 +7,27 @@ import java.nio.file.Paths;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.eclipse.jetty.server.Server;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.Contact;
 import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
+import spark.embeddedserver.EmbeddedServers;
+import spark.embeddedserver.jetty.EmbeddedJettyServer;
+import spark.embeddedserver.jetty.JettyHandler;
+import spark.embeddedserver.jetty.JettyServerFactory;
+import spark.http.matching.MatcherFilter;
+import spark.route.Routes;
+import spark.staticfiles.StaticFilesConfiguration;
 import dina.LabelCreator.LabelCreator;
 import dina.LabelCreator.Options.Options;
+import dina.TemplateCreator.TemplateCreator;
 import dina.api.SwaggerParser;
+import dina.api.requests.AccessTmp;
+import dina.api.requests.CreateHTML;
+import dina.api.requests.CreatePDF;
 import dina.api.routes.AccessTmpRoute;
 import dina.api.routes.CreateHTMLRoute;
 import dina.api.routes.CreatePDFRoute;
@@ -38,11 +51,18 @@ public class Main {
 	
     public static void main(String[] args) {
     	
+    	// config embedded Jetty server
+    	EmbeddedServers.add(EmbeddedServers.Identifiers.JETTY, (Routes routeMatcher, StaticFilesConfiguration staticFilesConfiguration, boolean hasMultipleHandler) -> {
+            JettyHandler handler = setupHandler(routeMatcher, staticFilesConfiguration, hasMultipleHandler);
+            customJettyServerFactory serv = new customJettyServerFactory();
+            return new EmbeddedJettyServer(serv, handler);
+        });
+    	
+    	port(80);
+    	
     	Options op = new Options();
     	op.setOptions(args);
     	//LabelCreator labels = new LabelCreator(op);
-    			
-    	port(80);
     	
     	staticFiles.location("/public");  // Static (web accessible) files (e.g. CSS files etc.) can be placed in src/main/resources/public 
     	
@@ -71,6 +91,53 @@ public class Main {
     	path("/labels", () -> {
     		path("/"+API_VERSION, () -> {
 	    		
+    			post("/", (req, res) -> {
+    				
+    				if(req.queryParams("template")==null || req.queryParams("template").isEmpty())
+    				{	
+    					//res.redirect("/labels/"+API_VERSION+"/template/choose", 303);
+    					TemplateCreator tmpl = new TemplateCreator(op);
+			        	tmpl.baseURL = "http://"+req.host();
+			        	tmpl.target = tmpl.baseURL+ req.pathInfo();
+			        	tmpl.origReq = req;
+			        	
+			        	return tmpl.chooseTemplateForm();
+    				}
+    				else {
+    					String format = req.queryParams("format");
+    					String data = req.queryParams("data");
+    					
+    					if(format==null || format.isEmpty())
+    						format="html";
+    					
+	    				if(format.equalsIgnoreCase("html"))
+	    					try {
+	    						 CreateHTML c = new CreateHTML(op, req, res);
+	    				         String re = c.result();
+	    				         return re;
+	    					} catch (Exception e) {
+	    						// TODO Auto-generated catch block
+	    						e.printStackTrace();
+	    					}
+	    				 
+	    				if(format.equalsIgnoreCase("pdf"))
+	    					try {
+	    						CreatePDF c = new CreatePDF(op, req, res);
+	    				        return c.result();
+	    					} catch (Exception e) {
+	    						// TODO Auto-generated catch block
+	    						e.printStackTrace();
+	    					}
+    				}
+    				return "3rror";
+    			});
+    			
+    			get("/tmp", (req, res) -> {
+    	    		
+    				  AccessTmp c = new AccessTmp(op, req, res);
+    		          return c.result();
+    		     });
+    			
     			try {
 					CreatePDFRoute.route(op);
 				} catch (Exception e) {
@@ -96,20 +163,31 @@ public class Main {
 		        // @route   /templates/ 		=> get a list of all existing templates
 		        // @route   /template/{id} 		=> get a specific template with unique list of included placeholders and path to html file
 		        
-		        get("/template", (req, res) -> {
-				   
-		           if(req.queryParams("template")!=null)
-						op.templateFile = "templates/"+req.queryParams("template");
-					
-		     	   byte[] bytes = Files.readAllBytes(Paths.get(op.templateFile));         
-		            HttpServletResponse raw = res.raw();
-		
-		            raw.getOutputStream().write(bytes);
-		            raw.getOutputStream().flush();
-		            raw.getOutputStream().close();
-		            
-		            return res.raw();
-		        });
+    			path("/template", () -> {
+			        get("/show", (req, res) -> {
+					   
+			           if(req.queryParams("template")!=null)
+							op.templateFile = op.templateDir+"/"+req.queryParams("template");
+						
+			     	   byte[] bytes = Files.readAllBytes(Paths.get(op.templateFile));         
+			            HttpServletResponse raw = res.raw();
+			
+			            raw.getOutputStream().write(bytes);
+			            raw.getOutputStream().flush();
+			            raw.getOutputStream().close();
+			            
+			            return res.raw();
+			        });
+			        
+			        get("/show/all", (req, res) -> {
+			        	
+			        	res.header("Content-Type", "application/json");
+			        	res.body(new TemplateCreator(op).getTemplates().toString());
+			        	return res.body();
+			        });
+			       
+			       
+    			});
 		        
 		        get("/check", (req, res)-> {
 		        	
@@ -153,5 +231,12 @@ public class Main {
 		        */
 	    	});
     	});
+    }
+    
+    private static JettyHandler setupHandler(Routes routeMatcher, StaticFilesConfiguration staticFilesConfiguration, boolean hasMultipleHandler) {
+        MatcherFilter matcherFilter = new MatcherFilter(routeMatcher, staticFilesConfiguration, false, hasMultipleHandler);
+        matcherFilter.init(null);
+ 
+        return new JettyHandler(matcherFilter);
     }
 }

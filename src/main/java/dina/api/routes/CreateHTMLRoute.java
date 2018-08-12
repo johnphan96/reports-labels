@@ -42,14 +42,16 @@ public class CreateHTMLRoute implements Route {
 	
 	public static void route(@ApiParam(hidden=true) Options op) throws Exception {
 		
-		spark.Spark.post("/html", (req, res) -> {
-    		
-		   CreateHTML c = new CreateHTML(op, req, res);
-           return c.result();
+	spark.Spark.post("/html", (req, res) -> {
+			
+			CreateHTML c = new CreateHTML(op, req, res);
+			String re = c.result();
+			
+			return re;
      });
 		
 		spark.Spark.get("/html", (req, res) -> {
-			 CreateHTML c = new CreateHTML(op, req, res);
+			// CreateHTML c = new CreateHTML(op, req, res);
 	         //  return c.result();
 			   return "Please use POST method.";
 	     });

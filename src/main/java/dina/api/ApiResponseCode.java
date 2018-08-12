@@ -1,21 +1,31 @@
 package dina.api;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.jetty.http.HttpStatus;
 
 import spark.Response;
 
 
-public class ApiResponseCode extends HttpStatus {
+public class ApiResponseCode{
 	private int intCode;
 	private String message;
 	private HttpServletResponse response;
+	private Map<Integer,String> HttpStatusCode;
 	
 	public ApiResponseCode( Response res) {
+		
+		HttpStatusCode.put(200, "OK");
+		HttpStatusCode.put(400, "Bad Request");
+		HttpStatusCode.put(403, "Forbidden");
+		HttpStatusCode.put(404, "Not Found");
+		HttpStatusCode.put(405, "Method Not Allowed");
+		HttpStatusCode.put(500, "Internal Error");
+		
 		response = res.raw();
+		
 	}
 
 	public ApiResponseCode(Response res, int c, String message) {
@@ -23,9 +33,9 @@ public class ApiResponseCode extends HttpStatus {
 		this.setCode(c, message);
 	}
 
-	public ApiResponseCode(Response res, Code co) {
+	public ApiResponseCode(Response res, int co) {
 		response = res.raw();
-		this.setCode(co);
+		this.intCode = co;
 	}
 	
 	public int getCode() {
@@ -35,7 +45,7 @@ public class ApiResponseCode extends HttpStatus {
 	public void setCode(int c, String message) {
 		this.intCode = c;
 		if(message==null)
-			this.message = HttpStatus.getMessage(c);
+			this.message = HttpStatusCode.get(c);
 		
 		response.setStatus(c);
 		try {
@@ -45,16 +55,18 @@ public class ApiResponseCode extends HttpStatus {
 			e.printStackTrace();
 		}
 	}
-	public void setCode(Code co) {
-		this.intCode = co.getCode();
-		this.response.setStatus(co.getCode());
+	public void setCode(int code) {
+		this.intCode = code;
+		this.response.setStatus(code);
 		try {
-			response.sendError(co.getCode());
+			response.sendError(code);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.message = co.getMessage();
+		this.message = HttpStatusCode.get(code);
+		if(this.message==null)
+			this.message = "Unkown Error";
 	}
 	
 	public String getMessage() {

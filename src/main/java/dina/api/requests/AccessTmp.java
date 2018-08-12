@@ -7,9 +7,6 @@ import java.nio.file.Paths;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.jetty.http.HttpStatus.Code;
-
-import dina.LabelCreator.LabelCreator;
 import dina.LabelCreator.Options.Options;
 import dina.api.ApiResponseCode;
 import spark.Request;
@@ -30,19 +27,17 @@ public class AccessTmp {
 	}
 
 	public HttpServletResponse result() throws IOException {
-		   
-		   LabelCreator labels = new LabelCreator(op);
-		   labels.baseURL = "http://"+req.host()+req.pathInfo();
 		
 		   if(req.queryParams("f")==null)
-			   return new ApiResponseCode(res, 400, null).getResponse();
+			   return new ApiResponseCode(res, 400).getResponse();
 		   if(req.queryParams("f").isEmpty())
-			   return new ApiResponseCode(res, 400, null).getResponse();
+			   return new ApiResponseCode(res, 400).getResponse();
 		   
 		   Path path = Paths.get(op.tmpDir+"/"+req.queryParams("f"));
+		  // System.out.println(op.tmpDir);
 		   
 		   if(!path.toFile().exists())
-			   return new ApiResponseCode(res, Code.NOT_FOUND).getResponse();
+			   return new ApiResponseCode(res, 404).getResponse();
 		  
 	       	byte[] bytes = Files.readAllBytes(path);         
 	        HttpServletResponse raw = res.raw();

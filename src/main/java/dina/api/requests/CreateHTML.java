@@ -1,6 +1,9 @@
 package dina.api.requests;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import dina.LabelCreator.LabelCreator;
 import dina.LabelCreator.Options.Options;
 import spark.Request;
@@ -12,6 +15,7 @@ public class CreateHTML {
 	private Options op;
 	private Request req;
 	private Response res;
+	private List<String> codesForCleanUp = new ArrayList<>();
 	
 	public CreateHTML(Options options, Request request, Response response) {
 		op = options;
@@ -22,11 +26,17 @@ public class CreateHTML {
 	public String result() throws IOException {
 		   
 			if(req.queryParams("template")!=null)
-			   op.templateFile = "templates/"+req.queryParams("template");
+			   op.templateFile = op.templateDir+"/"+req.queryParams("template");
 		
-		   LabelCreator labels = new LabelCreator(op);
+		   LabelCreator labels = new LabelCreator(op, req.queryParams("data"));
 		   labels.baseURL = "http://"+req.host()+req.pathInfo();
-		   labels.jsonData = req.queryParams("data");
-		   return labels.parseTemplate();
+		   String re = labels.parseTemplate();
+
+		   return re;
+	}
+	
+	public List<String> getCleanUp(){
+		
+		return codesForCleanUp;
 	}
 }

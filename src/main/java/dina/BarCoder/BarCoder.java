@@ -28,19 +28,20 @@ public class BarCoder {
 	
 	public enum codeFormats { QR_CODE, CODE_128, DATA_MATRIX };
 	// set minimum size for code images
-	public static int width = 100;
-	public static int height = 100;
+	public static int width = 600;
+	public static int height = 600;
 	private static String csvSeparator;
 	
 	private static QRCodeWriter qrCodeWriter = new QRCodeWriter();
 	private static Code128Writer barCodeWriter = new Code128Writer();
 	private static DataMatrixWriter dataMatrixWriter = new DataMatrixWriter();
-	private static BitMatrix bitMatrix = new BitMatrix(width, height);
+	private static BitMatrix bitMatrix;
 	
 	public BarCoder(){
 		setCsvSeparator(",");
-		width = 300;
-		height = 300;
+		width = 600;
+		height = 600;
+		bitMatrix = new BitMatrix(width, height);
 	}
 	
 	public static String getCsvSeparator() {
