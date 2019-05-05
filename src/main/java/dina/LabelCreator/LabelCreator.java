@@ -16,8 +16,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,6 +56,7 @@ public class LabelCreator {
 	protected float pageWidth, pageHeight; 
 	protected int codeWidth, codeHeight;
 	protected String sess_uuid;
+	private int dataInteration = 0;
 	
 	protected Options options;//= new Options();
 	
@@ -63,9 +66,18 @@ public class LabelCreator {
 	ArrayList<String> systemPlaceholder = new ArrayList<String>(); 
 	ArrayList<String> customPlaceholder = new ArrayList<String>();
 	ArrayList<String> funcPlaceholder = new ArrayList<String>();
+	Map<String, String> localVariables = new HashMap<String, String>();
 	
 	
 	//ArrayList<ArrayList<String>> data =  new ArrayList<ArrayList<String>>();
+	
+	public int getDataInteration() {
+		return dataInteration;
+	}
+	
+	private void setDataInteration(int i) {
+		dataInteration = i;
+	}
 	
 	public LabelCreator(Options op, String data) {
 		
@@ -83,7 +95,7 @@ public class LabelCreator {
 		codeWidth = op.codeWidth;
 		codeHeight = op.codeHeight;
 		
-		registerPlaceholders();
+		registerPlaceholders();		
 		
 		if(!op.sessionIsSet)
 		{	
@@ -111,12 +123,23 @@ public class LabelCreator {
 		systemPlaceholder.add("COUNT REPEAT");
 		
 		// In the template the functional placeholders need be wrapped in triple brackets {{% %}}, but here without brackets
+		funcPlaceholder.add("GET");
+		funcPlaceholder.add("SET");
+		funcPlaceholder.add("PREV");
+		funcPlaceholder.add("NEXT");
+		funcPlaceholder.add("EACH");
 		funcPlaceholder.add("QR-Code");
 		funcPlaceholder.add("Barcode");
 		funcPlaceholder.add("DataMatrix");
 		funcPlaceholder.add("IF");
 		funcPlaceholder.add("EQUALS");
 		funcPlaceholder.add("EQUALSI");
+		funcPlaceholder.add("IFINARRAY");
+		funcPlaceholder.add("REPLACE");
+		funcPlaceholder.add("REPLACELAST");
+		funcPlaceholder.add("TOLOWER");
+		funcPlaceholder.add("TOUPPER");
+		funcPlaceholder.add("TRIM");
 		//customPlaceholder.add("inventoryNumber");
 	}
 	
@@ -247,6 +270,7 @@ public class LabelCreator {
     	/*for(String label : htmlParts) {*/
         for(int i=0; i<data.size(); i++) 
         {
+        	setDataInteration(i);
     		for (String pattern : customPlaceholder) 
     		{		
     			int l = i+1;
@@ -281,8 +305,11 @@ public class LabelCreator {
         				// replace system placeholders for label counter  numRepeatedItems
         				label = label.replace("{{{COUNT LABEL}}}", Integer.toString(l));
         				
-		        		htmlParts.set(l, label.replaceAll("\\{\\{"+ pattern + "\\}\\}", escapeHtml(data.getJSONObject(v).get(pattern).toString())));
-		        		//System.out.println(escapeHtml(data.getJSONObject(v).get(pattern).toString()));
+		        		htmlParts.set(l, label.replaceAll(Pattern.quote("{{"+ pattern + "}}"), data.getJSONObject(v).get(pattern).toString()));
+        				//htmlParts.set(l, label.replaceAll("\\{\\{"+ pattern + "\\}\\}", escapeHtml(data.getJSONObject(v).get(pattern).toString())));
+        				
+        				
+        				//System.out.println(escapeHtml(data.getJSONObject(v).get(pattern).toString()));
         		}
 	        	//System.out.println("pattern "+v+ "\""+pattern+"\": "+escapeHtml(data.getJSONObject(v).get(pattern).toString()));
         		//System.out.println(htmlParts.get(i));
@@ -291,71 +318,17 @@ public class LabelCreator {
 			}
     		
     		//execute functional placeholders
-    		for (String func : funcPlaceholder) 
-    		{
-    			String params = "";
-    			String replacement ="";
-    			List<String> paramsArray = new ArrayList<>();
-    			String[] codeArray = null;
+    		//for (String func : funcPlaceholder) 
+    		//{
     			int l = i+1;
     			String label = htmlParts.get(l);
-    
-    			List<String> funcParams = Arrays.asList(label.split("\\{\\{%"+func+" "));
-    			//System.out.println(funcParams+"\n-------------------");
- 			
-				if(funcParams.size()>1)
-				{
-					paramsArray = Arrays.asList(funcParams.get(1).split("%\\}\\}"));
-					params = paramsArray.get(0);
-					paramsArray = Arrays.asList(params.split("\\|"));
-					//System.out.println(paramsArray);
-				}
-				
-				if(paramsArray.size()>1)
-				{
-					
-					// simple boolean conditioning 
-					if(func.equalsIgnoreCase("IF")) {
-		        		replacement = (!paramsArray.get(0).trim().equals("0") && !paramsArray.get(0).trim().isEmpty() ? paramsArray.get(1) : paramsArray.get(2));
-					}
-					
-					// simple case-sensitive string comparison 
-					if(func.equalsIgnoreCase("EQUALS")) {
-		        		replacement = (paramsArray.get(0).equals(paramsArray.get(1)) ? paramsArray.get(2) : paramsArray.get(3));
-		        		System.out.println(paramsArray);
-					}
-					
-					// simple case-insensitive string comparison 
-					if(func.equalsIgnoreCase("EQUALSI")) {
-		        		replacement = (paramsArray.get(0).equalsIgnoreCase(paramsArray.get(1)) ? paramsArray.get(2) : paramsArray.get(3));
-					}
-					
-					// generate data codes & replace placeholders by image path
-					if(func.equalsIgnoreCase("QR-Code") || func.equalsIgnoreCase("Barcode") || func.equalsIgnoreCase("DataMatrix"))
-					{
-						String filename = "";
-						codeArray = new String[] { escapeHtml(paramsArray.get(0).toString()), escapeHtml(paramsArray.get(1).toString()) };
-						
-						if(func.equalsIgnoreCase("QR-Code")) {  
-		        			filename = BarCoder.createCode(codeArray, tmpDir, BarCoder.codeFormats.QR_CODE);
-		        			
-			        	}else if(func.equalsIgnoreCase("Barcode")) { 
-			        		filename = BarCoder.createCode(codeArray, tmpDir, BarCoder.codeFormats.CODE_128);
-			        		
-			        	}else if(func.equalsIgnoreCase("DataMatrix")) {
-			        		filename = BarCoder.createCode(codeArray, tmpDir, BarCoder.codeFormats.DATA_MATRIX);
-			        	}
-		        		
-						replacement =  baseURL +"/" + tmpPath + "?f="+ filename;
-		        		if(!Helper.checkURL(replacement.replaceAll("\\{\\{.*\\}\\}", ""), debug) && !debug)
-		        			replacement = "_";
-					}        		
-				}
-	        	htmlParts.set(l, label.replaceAll("\\{\\{%"+ func + " "+params.replaceAll("\\|",  "\\\\|").replaceAll("\\}",  "\\\\}").replaceAll("\\{",  "\\\\{") +"%\\}\\}", replacement));
-	        	replacement = "";
-	        	params = "";
+    			
+				//htmlParts.set(l, label.replaceAll("\\{\\{%"+ func + " "+params.replaceAll("\\|",  "\\\\|").replaceAll("\\}",  "\\\\}").replaceAll("\\{",  "\\\\{") +"%\\}\\}", replacement));
+    			htmlParts.set(l, nested_func(label));
+	        	//replacement = "";
+	        	//params = "";
 	        	//l++;
-    		}
+    		//}
     		
     		//System.out.println(codesForCleanUp.toString());
     	   // remove all remaining custom placeholders in the last label section
@@ -377,6 +350,205 @@ public class LabelCreator {
 	    html = html.replaceAll("\\{\\{.*\\}\\}", "");
 	    
 		return(html);
+	}
+
+	private String nested_func(String label) {
+		
+			for (String func : funcPlaceholder) {
+				if((label.contains("{{%"+func+" ") || label.contains("\\{\\{%"+func+" ")))
+					label = replace_func(label, func);
+			}
+		return label;
+	}
+	
+	private String replace_func(String label, String func) {
+		
+		String params = "";
+		String replacement ="";
+		List<String> paramsArray = new ArrayList<>();
+		String[] codeArray = null;
+		
+		List<String> funcParams = Arrays.asList(label.split("\\{\\{%"+func+" "));
+		//System.out.println(funcParams+"\n-------------------");
+		
+		if(funcParams.size()>1)
+		{
+			paramsArray = Arrays.asList(funcParams.get(1).split("%"+func+"\\}\\}"));
+			if(func.equalsIgnoreCase("EACH"))
+			{
+				params = paramsArray.get(0);
+				paramsArray = Arrays.asList(params.split("\\|", 3));
+				//System.out.println(paramsArray.get(2));
+			}else
+			{	
+				params = nested_func(paramsArray.get(0));
+				//params = paramsArray.get(0);
+				paramsArray = Arrays.asList(params.split("\\|"));
+			}
+			//System.out.println(label);
+		}
+		
+		if(paramsArray.size()>1)
+		{
+			// reference to previous data record (params: key, value)
+			if(func.equalsIgnoreCase("PREV")) {
+				int di = getDataInteration()-1;
+				JSONObject d = new JSONObject();
+				String dat = "";
+				if(di>=0 && paramsArray.get(0)!=null)
+				{
+					d = JSONArray.fromObject( jsonData ).getJSONObject(di);
+					if(d != null && d.get(paramsArray.get(0))!=null)
+						dat = d.get(paramsArray.get(0)).toString();
+				}
+				if(dat != null)
+				{
+					replacement = dat;
+				}
+				else
+				{
+					replacement = "";
+				}
+			}
+			
+			// reference to next data record (params: key, value)
+			if(func.equalsIgnoreCase("NEXT")) {
+				int di = getDataInteration()+1;
+				JSONObject d = new JSONObject();
+				String dat = "";
+				if(di<JSONArray.fromObject( jsonData ).size() && paramsArray.get(0)!=null)
+				{
+					d = JSONArray.fromObject( jsonData ).getJSONObject(di);
+					if(d != null && d.get(paramsArray.get(0))!=null)
+						dat = d.get(paramsArray.get(0)).toString();
+				}
+				if(dat != null)
+				{
+					replacement = dat;
+				}
+				else
+				{
+					replacement = "";
+				}
+			}
+			
+			// set local variable (params: key, value)
+			if(func.equalsIgnoreCase("SET")) {
+        		replacement = "";
+        		localVariables.put(paramsArray.get(0), paramsArray.get(1));
+        		//System.out.println("SET "+localVariables);
+			}
+			
+			// get local variable (param: key)
+			if(func.equalsIgnoreCase("GET")) {
+				if(localVariables.keySet().contains(paramsArray.get(0)))
+					replacement = localVariables.get(paramsArray.get(0));
+				else
+					replacement = "";
+        		//System.out.println("GET "+paramsArray.get(0)+"="+localVariables.get(paramsArray.get(0)));
+			}
+						
+			// simple boolean conditioning 
+			if(func.equalsIgnoreCase("IF")) {
+        		replacement = (!paramsArray.get(0).trim().equals("0") && !paramsArray.get(0).trim().isEmpty() ? paramsArray.get(1) : paramsArray.get(2));
+			}
+			
+			// simple case-sensitive string comparison 
+			if(func.equalsIgnoreCase("EQUALS")) {
+        		replacement = (paramsArray.get(0).equals(paramsArray.get(1)) ? paramsArray.get(2) : paramsArray.get(3));
+        		//System.out.println(paramsArray);
+			}
+			
+			// simple case-insensitive string comparison 
+			if(func.equalsIgnoreCase("EQUALSI")) {
+        		replacement = (paramsArray.get(0).equalsIgnoreCase(paramsArray.get(1)) ? paramsArray.get(2) : paramsArray.get(3));
+        		//System.out.println(paramsArray.get(0)+ "====>" +paramsArray.get(1)+ "====>" +paramsArray.get(0).equalsIgnoreCase(paramsArray.get(1)));
+			}
+					
+			// check if string is in character separated values (params: separated string, separator, if action, else action)
+			if(func.equalsIgnoreCase("IFINARRAY")) {
+				String separator = paramsArray.get(1);
+				//System.out.println(separator);
+				boolean contains = Arrays.asList(paramsArray.get(0).split(separator)).contains(paramsArray.get(2));
+        		replacement = (contains ? paramsArray.get(3) : paramsArray.get(4));
+        		//System.out.println(replacement);
+			}
+			
+			// replace string (params: original string, regex, replacement)
+			if(func.equalsIgnoreCase("REPLACE")) {
+				replacement = paramsArray.get(0).replaceAll(Pattern.quote(paramsArray.get(1)), paramsArray.get(2));
+			}
+			
+			// replace last occurrence of string (params: original string, regex, replacement)
+			if(func.equalsIgnoreCase("REPLACELAST")) {
+				String str = paramsArray.get(0);
+				int ind = str.lastIndexOf(paramsArray.get(1));
+				if( ind>=0 )
+				    str = new StringBuilder(str).replace(ind, ind+1,paramsArray.get(2)).toString();
+				replacement = str;
+			}
+			
+			// replace string to lower case (params: original string)
+			if(func.equalsIgnoreCase("TOLOWER")) {
+				replacement = paramsArray.get(0).toLowerCase();
+			}
+			
+			// replace string to upper case (params: original string)
+			if(func.equalsIgnoreCase("TOUPPER")) {
+				replacement = paramsArray.get(0).toLowerCase();
+			}
+			
+			// trim whitespace in string (params: original string)
+			if(func.equalsIgnoreCase("TRIM")) {
+				replacement = paramsArray.get(0).trim();
+			}
+		
+			
+			// generate data codes & replace placeholders by image path
+			if(func.equalsIgnoreCase("QR-Code") || func.equalsIgnoreCase("Barcode") || func.equalsIgnoreCase("DataMatrix"))
+			{
+				String filename = "";
+				codeArray = new String[] { escapeHtml(paramsArray.get(0).toString()), escapeHtml(paramsArray.get(1).toString()) };
+				
+				if(func.equalsIgnoreCase("QR-Code")) {  
+        			filename = BarCoder.createCode(codeArray, tmpDir, BarCoder.codeFormats.QR_CODE);
+        			
+	        	}else if(func.equalsIgnoreCase("Barcode")) { 
+	        		filename = BarCoder.createCode(codeArray, tmpDir, BarCoder.codeFormats.CODE_128);
+	        		
+	        	}else if(func.equalsIgnoreCase("DataMatrix")) {
+	        		filename = BarCoder.createCode(codeArray, tmpDir, BarCoder.codeFormats.DATA_MATRIX);
+	        	}
+        		
+				replacement =  baseURL +"/" + tmpPath + "?f="+ filename;
+        		if(!Helper.checkURL(replacement.replaceAll("\\{\\{.*\\}\\}", ""), debug) && !debug)
+        			replacement = "_";
+			}        		
+			
+			// do something for each element in character separated values (params: separated string, separator, replacement)
+			if(func.equalsIgnoreCase("EACH")) {
+				String separator = paramsArray.get(1);
+				List<String> elements = Arrays.asList(paramsArray.get(0).split(separator));
+        		for(int x=0; x<elements.size(); x++) {
+        			elements.set(x, paramsArray.get(2).replaceAll(Pattern.quote("{{%s}}"), elements.get(x)));
+        			//ystem.out.println(elements.get(x));
+        		}
+        		replacement = String.join(separator, elements);
+        		//System.out.println(paramsArray.get(2));
+        		//System.out.println(replacement);
+			}
+		}
+		
+		//System.out.println("Before ------  " +label );
+		//params = params.replaceAll("\\|",  "\\\\|").replaceAll("\\}",  "\\\\}").replaceAll("\\{",  "\\\\{") ;
+		String rep = label.replaceAll(Pattern.quote("{{%"+ func + " "+ params +"%"+ func + "}}"), replacement);
+		//System.out.println("After ------  " +label );
+		if(rep.contains("{{%"+ func + " "))
+		{
+			//System.out.println("\\{\\{%"+ func + " "+params.replaceAll("\\|",  "\\\\|").replaceAll("\\}",  "\\\\}").replaceAll("\\{",  "\\\\{") +"%"+ func + "\\}\\}");
+			rep = replace_func(rep, func);
+		}
+		return rep;
 	}
 
 	public void setData(String data) {
