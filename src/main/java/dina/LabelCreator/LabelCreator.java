@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -23,7 +24,11 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringEscapeUtils;
 
+import org.jtwig.JtwigModel;
+import org.jtwig.JtwigTemplate;
+import org.jtwig.resource.reference.ResourceReference;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
@@ -37,6 +42,7 @@ import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.PageSizeUnits;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import dina.BarCoder.BarCoder;
 import dina.LabelCreator.Helper.Helper;
+import dina.LabelCreator.Helper.twigHelper;
 import dina.LabelCreator.Options.Options;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -173,7 +179,9 @@ public class LabelCreator {
                     		//f.printStackTrace();
                     	}
                      }*/
-                     template = parseTemplate();
+                     //template = parseTemplate();
+                     template = parseTwigTemplate();
+                     
                      builder.withHtmlContent(template, "/");
                      
                      builder.useDefaultPageSize(pageWidth, pageHeight, pageUnit);
@@ -196,6 +204,28 @@ public class LabelCreator {
                      // LOG exception.
               }
 	}
+	
+	
+	public String parseTwigTemplate() throws MalformedURLException, IOException{
+		
+		String twig = null;
+	
+		ArrayList<Object> data = Helper.jsonStringToArray( jsonData );
+		
+		java.util.ResourceBundle.clearCache();
+
+		twigHelper twigConf = new twigHelper(options);
+		
+		JtwigTemplate template = JtwigTemplate.fileTemplate(new File(templateFile).getAbsolutePath(), twigConf.configuration);
+		JtwigModel model = JtwigModel.newModel().with("dataArray", data);
+
+		System.out.println(data);	
+		
+		twig = template.render(model);
+		
+		return twig;
+	}
+	
 	
 	
 	public String parseTemplate(){

@@ -106,6 +106,9 @@ public class Main {
     				else {
     					String format = req.queryParams("format");
     					String data = req.queryParams("data");
+    					op.baseURL = "http://"+req.host() + req.pathInfo();
+    					
+    					System.out.println(op.baseURL);
     					
     					if(format==null || format.isEmpty())
     						format="html";

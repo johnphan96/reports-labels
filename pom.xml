@@ -34,6 +34,10 @@
 			<name>MVNRepository</name>
 			<url>http://mvnrepository.com</url>
 		</repository>
+		<repository>
+	        <id>jcenter</id>
+	        <url>https://jcenter.bintray.com/</url>
+   	 	</repository>
 	</repositories>
 
 	<properties>
@@ -70,6 +74,12 @@
 			<type>maven-plugin</type>
 		</dependency>
 
+		<!--  Required for Twig templates -->
+		<dependency>
+	        <groupId>org.jtwig</groupId>
+	        <artifactId>jtwig-core</artifactId>
+	        <version>5.58</version>
+   		</dependency>
 
 		<dependency>
 			<!-- ALWAYS required. -->

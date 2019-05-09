@@ -30,8 +30,10 @@ public class CreateHTML {
 		
 		   LabelCreator labels = new LabelCreator(op, req.queryParams("data"));
 		   labels.baseURL = "http://"+req.host()+req.pathInfo();
-		   String re = labels.parseTemplate();
+		   //String re = labels.parseTemplate();
 
+           String re = labels.parseTwigTemplate();
+           
 		   return re;
 	}
 	
