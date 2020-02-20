@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Mammalia Labels</title>
+    <!--link rel="stylesheet" type="text/css" href="general.css" title="Style" media="screen" /-->
+    <style>
+        
+      @page {
+        background: white;
+        font-family: Arial, sans-serif;
+        font-size: 7px;
+        width: 210mm;
+    	height: 297mm;
+    	margin-top: 10mm;
+        margin-left: 20mm;
+        margin-bottom: 10mm;
+        margin-right: 10mm;
+      }
+            
+      html {
+        background-color: transparent;
+		min-width: 210mm;
+		min-height: 297mm;
+      }
+      body {
+        background-color: white;
+        font-family: Arial, sans-serif;
+        font-size: 7px;
+       /* border: 1px solid black;*/
+        margin: 0;
+        padding: 0;
+        text-align: left;
+		width: 210mm;
+		height: 297mm;
+      }
+      
+      table { page-break-inside:auto }
+      tr    { page-break-inside:avoid; page-break-after:auto }
+	  
+	  table {
+		border: none;
+		border-collapse: collapse;
+		margin: 0;
+		padding: 0;
+   	  }
+	  
+	  td, th {
+		/*border: 1px blue dotted;*/
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		text-overflow: "*";  /* attach star when text bigger than expected */
+    	white-space: nowrap;
+	  }
+	  
+	  table.maintable {
+	  	width: 170mm !important;
+		max-width: 170mm;
+		min-width: 170mm;
+		
+		height: 44mm !important;
+		max-height: 44mm;
+		
+		margin: 0;
+		padding: 0;
+		border-spacing: 0px;
+		border-collapse: collapse; 
+		table-layout:fixed;
+		
+		page-break-inside:avoid;
+		page-break-after:always;
+	  }
+	  
+	  table.maintable tr {
+	  	page-break-inside:avoid; 
+	  	page-break-after:auto;
+	  }
+	  
+	  td.main {
+	    width: 85mm;
+		min-width: 85mm;
+		max-width: 85mm;
+		height: 44mm !important;
+	  	max-height: 44mm;
+	  	min-height: 44mm;
+	  	
+		border: 1px grey dashed;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		word-wrap:break-word;
+		font-size: 7px;
+		/*vertical-align: middle;*/
+	  }
+	  
+	  table.subtable {
+	  	/*border: 1px grey solid;*/
+	  	width: 84mm;
+	  	margin: 0; 
+	  	margin-top: 3mm;
+	  }
+	  
+	  table.subtable table th{
+	  	font-weight: normal;
+	  	max-width: 15mm;
+	  	padding-bottom: 2px;
+	  	padding-right: 7px;
+	  }
+	  
+	  table.subtable table td{
+	  	font-weight: normal;
+	  	max-width: 15mm;
+	  	padding-bottom: 2px;
+	  }
+	  
+	  table.subtable td.left{
+	    width: 50mm;
+	  	max-width: 50mm;
+	  	min-width: 50mm;
+	  	
+	  	padding-left: 3mm;
+	  	padding-right: 2mm;
+	  	text-align: left;
+	  	vertical-align: top;
+	  }
+	  
+	  table.subtable td.center{
+	    width: 10mm;
+	  	max-width: 10mm;
+	  	min-width: 10mm;
+	  	padding: 0;
+	  }
+	 
+	  table.subtable td.right{
+	  	width: 4mm !important;
+	  	max-width: 4mm;
+	  	min-width: 4mm;
+	  	height: 4mm !important;
+	  	/*max-height: 44mm;
+	  	min-height: 44mm;*/
+	  	padding: 0;
+	  	padding-bottom: 1mm;
+	  	text-align: left;
+	  	vertical-align: bottom;
+	  	overflow: hidden;
+	  }
+	  
+	  table.subtable td.right div {
+	  	padding: 0;
+	  	margin: 0;
+	  	width: 4mm;
+	  	/*overflow: hidden;*/
+	  	/*height: 4mm;*/
+	 	display: block;
+	 	transform: rotate(-90deg);
+	 	white-space: nowrap;
+	 	text-align: left;
+	 	font-size: 6px;
+	  }
+	  
+	  table.subtable tr.lastRow {
+	  	height: 12mm !important;
+	  	padding: 0;
+	  	margin: 0;
+	  }
+	  
+	  .taxon {
+	  	font-size: 11px;
+	  	font-weight: bold;
+	  }
+	  
+	  .authorYear {
+	  	font-size: 7px;
+	  	font-weight: normal;
+	  }
+	  
+	  .GIN {
+	  	max-height: 12mm;
+	  	padding: 0;
+	  	margin: 0;
+	  }
+	  
+	  .GIN-prefix {
+	  	font-size: 11px;
+	  }
+	  .catalogNumber {
+	  	font-size: 18px;
+	  	font-weight: bold;
+	  	letter-spacing: 2pt;
+	  }
+	  .dot {
+          height: 5mm;
+          width: 5mm;
+          border: 0.5px dotted grey;
+          border-radius: 50%;
+          display: inline-block;
+          margin-top: 5px;
+        }
+	  .qrcode {
+		width: 12mm;
+		height: 12mm;
+		border: none;
+		
+	  }
+	  #header {
+		/*position: absolute;*/
+		top: 0px; 
+		font-weight: bold;
+	  }
+    </style>
+  </head>
+  <body>
+
+{% set i = 0 %}
+{% set p = 0 %}
+{% set d = 0 %}
+{% set max = dataArray|length %}
+{% set cells = 2 %}
+{% set cellsPerPage = 12 %}
+
+{% for data in dataArray %}
+	{% if p == 0 %}
+		<table class="maintable">
+		<tbody>
+	{% endif %}
+	
+	{% if i == 0 %}
+		<tr>
+	{% endif %}
+	
+	
+		{% set filename = replace(data.reservedText, '/', '_') %}
+		{% set qrImage = generateCode(data.reservedText, filename , 'QR-Code') %}
+	
+		<td class="main">
+			<table class="subtable">
+				<tr>
+					<td class="left" colspan="2"><div class="taxon"><span class="taxon">{{data.taxon}}</span> <span class="authorYear">{{author}}</span></div></td>
+					<td class="right" rowspan="3"><div>http://coll.mfn-berlin.de/u/{{ data.reservedText }}</div></td>
+				</tr>
+				<tr><td class="left">
+						<br/>
+    					<table>
+        					<tr><th>Prep.:</th><td>prep</td></tr>
+        					<tr><th>Sex, Age:</th><td>sex</td></tr>
+        					<tr><th>Locality:</th><td>loc</td></tr>
+        					<tr><th>Country:</th><td>country</td></tr>
+        					<tr><th>Collector:</th><td>coll.</td></tr>
+        					<tr><th>Coll. date:</th><td></td></tr>
+    					</table>
+					</td>
+					<td class="center" align="center" valign="top"><span class="dot"></span></td>
+					
+				</tr>
+				<tr class="lastRow">
+					<td class="left"><div class="GIN"><span class="GIN-prefix">ZMB_MAM_</span><span class="catalogNumber">123457418</span></div></td>
+					
+					<td class="center" align="right"><img class="qrcode" src="{{ qrImage }}"/></td>
+					
+				</tr>
+			</table>
+		</td>
+		
+		
+    {% if i == cells-1 or p == cellsPerPage-1 or d == max-1 %}
+		</tr>
+		{% set i = 0 %}
+	{% else %}
+		{% set i = i+1 %}
+	{% endif %}
+	
+	{% if p == cellsPerPage-1 or d == max-1 %}
+		</tbody></table><br/><br/>
+		{% set p = 0 %}
+		{% set i = 0 %}
+	{% else %}
+		{% set p = p+1 %}
+	{% endif %}
+	
+	{% set d = d+1 %}
+		
+{% endfor %}
+
+  </body>
+</html>
