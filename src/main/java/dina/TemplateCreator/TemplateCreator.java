@@ -64,27 +64,48 @@ public class TemplateCreator {
 	}
 	
 	public JSONObject getTemplates() {
-		
-		final File folder = new File(options.templateDir);
+		return getTemplates("");
+	}
 	
+	public JSONObject getTemplates(String subDir) {
+		
+		final File folder = new File(options.templateDir+"/"+subDir);
+		JSONObject ret = new JSONObject();
+		ret.put("groups", new JSONArray());
 		JSONArray out = new JSONArray();
-		int i = 0;
+
+        // directories need to be listed as groups before files
+		for (final File fileEntry : folder.listFiles()) {
+			if (fileEntry.isDirectory()) {
+	        	JSONObject tmpl = new JSONObject();
+	        	JSONArray groups = ret.getJSONArray("groups");
+	        	groups.add(groups.size(), subDir+"/"+fileEntry.getName());
+	        	ret.put("groups", groups);
+	        	tmpl.put(subDir+"/"+fileEntry.getName(), getTemplates(subDir+"/"+fileEntry.getName()));
+	        	out.add(out.size(), tmpl);
+	        } else {
+	        	// skip in order to do the files later
+	        }
+		};
+
+		// now list the files
 		for (final File fileEntry : folder.listFiles()) {
 	        if (fileEntry.isDirectory()) {
-	            // skip
+	        	// skip in as the directories have already been treated
 	        } else {
 	        	
 	        	JSONObject tmpl = new JSONObject();
 	        	tmpl.put("name", FilenameUtils.removeExtension(fileEntry.getName()));
-	        	tmpl.put("file", fileEntry.getName());
-	        	out.add(i, tmpl);
+	        	tmpl.put("file", subDir+"/"+fileEntry.getName());
+	        	out.add(out.size(), tmpl);
 	        }
-	        i++;
 		}
+		
 		if(debug)
 			System.out.println(out);
-		JSONObject ret = new JSONObject();
-		ret.put("templates", out);
+		
+		if(out.size()>0)
+			ret.put("templates", out);
 		return ret;
 	}
 }

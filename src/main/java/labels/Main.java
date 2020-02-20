@@ -1,15 +1,15 @@
 package labels;
 
 import static spark.Spark.*;
+import static spark.Spark.staticFiles;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.jetty.server.Server;
-
-import io.swagger.annotations.Api;
 import io.swagger.annotations.Contact;
 import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
@@ -17,11 +17,9 @@ import io.swagger.annotations.Tag;
 import spark.embeddedserver.EmbeddedServers;
 import spark.embeddedserver.jetty.EmbeddedJettyServer;
 import spark.embeddedserver.jetty.JettyHandler;
-import spark.embeddedserver.jetty.JettyServerFactory;
 import spark.http.matching.MatcherFilter;
 import spark.route.Routes;
 import spark.staticfiles.StaticFilesConfiguration;
-import dina.LabelCreator.LabelCreator;
 import dina.LabelCreator.Options.Options;
 import dina.TemplateCreator.TemplateCreator;
 import dina.api.SwaggerParser;
@@ -169,17 +167,25 @@ public class Main {
     			path("/template", () -> {
 			        get("/show", (req, res) -> {
 					   
+			        	res.header("Content-Type", "text/html");
+			        	
 			           if(req.queryParams("template")!=null)
 							op.templateFile = op.templateDir+"/"+req.queryParams("template");
+			           
+			           String html = "";
+			           File file = new File(op.templateFile);
+					   FileInputStream fis;
 						
-			     	   byte[] bytes = Files.readAllBytes(Paths.get(op.templateFile));         
-			            HttpServletResponse raw = res.raw();
-			
-			            raw.getOutputStream().write(bytes);
-			            raw.getOutputStream().flush();
-			            raw.getOutputStream().close();
-			            
-			            return res.raw();
+					    if(file.exists()) {
+							fis = new FileInputStream(file);
+						    byte[] data = new byte[(int) file.length()];
+							fis.read(data);
+						    fis.close();
+						    html = new String(data, "UTF-8");
+					    };
+					    res.body(html);
+					    
+					    return res.body();
 			        });
 			        
 			        get("/show/all", (req, res) -> {

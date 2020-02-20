@@ -44,7 +44,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- Define the version of OPEN HTML TO PDF in the properties section of 
 			your POM. -->
-		<openhtml.version>0.0.1-RC14</openhtml.version>
+		<openhtml.version>1.0.1</openhtml.version>
 
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -110,12 +110,12 @@
 			<version>${openhtml.version}</version>
 		</dependency>
 
-		<dependency>
-			<!-- Optional, leave out if you do not need HTML5 parsing support. -->
+		<!-- dependency >
+			< Optional, leave out if you do not need HTML5 parsing support. >
 			<groupId>com.openhtmltopdf</groupId>
 			<artifactId>openhtmltopdf-jsoup-dom-converter</artifactId>
 			<version>${openhtml.version}</version>
-		</dependency>
+		</dependency -->
 
 		<dependency>
 			<!-- Optional, leave out if you do not need logging via slf4j. -->
