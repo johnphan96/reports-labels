@@ -113,8 +113,10 @@
 	  
 	  table.subtable table td{
 	  	font-weight: normal;
-	  	max-width: 15mm;
+	  	max-width: 50mm;
+	  	width: 50mm;
 	  	padding-bottom: 2px;
+	 	/*border: 1px blue dashed;*/
 	  }
 	  
 	  table.subtable td.left{
@@ -171,6 +173,12 @@
 	  .taxon {
 	  	font-size: 11px;
 	  	font-weight: bold;
+	  	font-style: italic;
+	  }
+	  
+	  .higherTaxon {
+	  	font-size: 11px;
+	  	font-weight: bold;
 	  }
 	  
 	  .authorYear {
@@ -222,6 +230,38 @@
 {% set cells = 2 %}
 {% set cellsPerPage = 12 %}
 
+
+        {# Prepartion abbreviations #}
+        {% set prep = {
+        	"Round skin" : 		"rd. skin",
+        	"Skeleton" : 		"skel.",
+        	"Skeleton parts" : 	"skel. parts",
+            "Skull fragment" : 	"skull frag.",
+            "Antlers" : 		"antl.",
+            "Skin mounted" : 	"skin mount.",
+            "Skeleton mounted":	"skel. mount.",
+            "Mounted" : 		"mount.",
+            "DNA sample" : 		"DNA",
+            "Alcohol" : 		"alc.",
+            "Mandible" : 		"mand."
+        	} 
+        %}
+        
+        {# Age abbreviations #}
+        {% set age = {
+            "adult": 		"ad.",
+            "embryo": 		"embr.",
+            "fetus": 		"fet.",
+            "juvenilis":	"juv.",
+            "neonate": 		"neon.",
+            "neonates": 	"neon.",
+            "pullus": 		"pull.",
+            "senilis": 		"sen.",
+            "subadult": 	"subad."
+        	}
+        %}
+
+
 {% for data in dataArray %}
 	{% if p == 0 %}
 		<table class="maintable">
@@ -231,33 +271,92 @@
 	{% if i == 0 %}
 		<tr>
 	{% endif %}
-	
-	
+
 		{% set filename = replace(data.reservedText, '/', '_') %}
-		{% set qrImage = generateCode(data.reservedText, filename , 'QR-Code') %}
-	
+		{% set qrImage = generateCode('http://coll.mfn-berlin.de/u/'~ data.reservedText, filename , 'QR-Code') %}
+		
+		{# Some taxon rules #}
+			{% set taxonStyle = 'taxon' %}
+    		{% if (data.Genus is not empty) and (data.Genus is not null) %}
+    			{% set taxon = data.Genus %}
+    			{% if (data.Species is not empty) and (data.Species is not null) %}
+    				{% set taxon = taxon ~ ' ' ~ data.Species %}
+    				{% if (data.Subspecies is not empty) and (data.Subspecies is not null) %}
+    				    {% set taxon = taxon ~ ' ' ~ data.Subspecies %}
+    				{% endif %}
+    			{% endif %}
+    		{% else %}
+			    {% set taxonStyle = 'higherTaxon' %}
+    			{% if (data.Family is not empty) and (data.Family is not null) %}
+        			    {% set taxon = data.Family %}
+    			{% elseif (data.Order is not empty) and (data.Order is not null) %}
+    				{% set taxon = data.Order %}
+    			{% elseif (data.Class is not empty) and (data.Class is not null) %}
+    				{% set taxon = data.Class %}
+        		{% else %}
+        			{% set taxon = '' %}
+        		{% endif %}
+    		{% endif %}
+		
+		
+		{# Some date rules #}
+			{% if (data.startDateNumericYear is not defined) or (data.startDateNumericYear is null) or (data.startDateNumericYear is empty) %}
+    			{% set date = data.dateAccessioned %}
+    			{% set dateType = 'Date of entry' %}
+    		{% else %}
+    			{% set dateType = 'Coll. date' %}
+    			{% if (data.endDateNumericYear is defined) and (data.endDateNumericYear is not null) and (data.endDateNumericYear is not empty) %}
+        			{% set date = data.startDateNumericYear ~ '-' ~ data.endDateNumericYear %}
+        		{% else %}
+        			{% set date = data.startDateNumericYear %}
+        		{% endif %}
+        	{% endif %}
+        	
+        {# Prepartion rule #}
+        	{% if (prep[data.name] is not defined) or (prep[data.name] is empty) or (prep[data.name] is null) %}
+        		{% set preparation = lower(data.name) %}
+        	{% else %}
+        		{% set preparation = prep[data.name] %}
+        	{% endif %}
+        
+        {# Merge sex and age #}
+		{% if (data.text8 is not null) or (data.text8 is not empty) %}
+			{% set sex_age = data.text8 %}
+		{% endif %}
+		
+		{% if (data.text7 is not null) and (data.text7 is not empty) %}
+			{% if (age[data.text7] is not defined) or (age[data.text7] is empty) or (age[data.text7] is null) %}
+			    {% set sex_age = sex_age ~ ', ' ~ (lower(data.text7)) %}
+			{% else %}
+				{% set sex_age = sex_age ~ ', ' ~ (age[data.text7]) %}
+			{% endif %}
+		{% endif %}
+		
+
+		
+		
 		<td class="main">
 			<table class="subtable">
 				<tr>
-					<td class="left" colspan="2"><div class="taxon"><span class="taxon">{{data.taxon}}</span> <span class="authorYear">{{author}}</span></div></td>
+					<td class="left" colspan="2"><div><span class="{{ taxonStyle }}">{{ taxon }}</span> <span class="authorYear">{{data.author}}</span></div></td>
 					<td class="right" rowspan="3"><div>http://coll.mfn-berlin.de/u/{{ data.reservedText }}</div></td>
 				</tr>
 				<tr><td class="left">
 						<br/>
     					<table>
-        					<tr><th>Prep.:</th><td>prep</td></tr>
-        					<tr><th>Sex, Age:</th><td>sex</td></tr>
-        					<tr><th>Locality:</th><td>loc</td></tr>
-        					<tr><th>Country:</th><td>country</td></tr>
-        					<tr><th>Collector:</th><td>coll.</td></tr>
-        					<tr><th>Coll. date:</th><td></td></tr>
+        					<tr><th>Prep.:</th><td>{{ preparation }}</td></tr>
+        					<tr><th>Sex, Age:</th><td>{{ null2empty(sex_age)|lower }}</td></tr>
+        					<tr><th>Locality:</th><td>{{ null2empty(data.localityName) }}</td></tr>
+        					<tr><th>Country:</th><td>{{ null2empty(data.Country) }}</td></tr>
+        					<tr><th>Collector:</th><td>{{ null2empty(data.lastName) }}</td></tr>
+        					<tr><th>{{ dateType }}:</th><td>{{ null2empty(date) }}</td></tr>
     					</table>
 					</td>
 					<td class="center" align="center" valign="top"><span class="dot"></span></td>
 					
 				</tr>
 				<tr class="lastRow">
-					<td class="left"><div class="GIN"><span class="GIN-prefix">ZMB_MAM_</span><span class="catalogNumber">123457418</span></div></td>
+					<td class="left"><div class="GIN"><span class="GIN-prefix">ZMB_Mam_</span><span class="catalogNumber">{{ ireplace(data.catalogNumber, 'ZMB_MAM_', '')|null2empty }}</span></div></td>
 					
 					<td class="center" align="right"><img class="qrcode" src="{{ qrImage }}"/></td>
 					

@@ -19,7 +19,10 @@ public class twigHelper {
 		this.op = options;
 	}
 	
+	
+	
 	// Define your Twig functions here
+	
 	
 	/*
 	 * Description:		replace a (sub-)string by another (sub-)string
@@ -52,6 +55,71 @@ public class twigHelper {
            return (re);
        }
    };
+   
+   
+	/*
+	 * Description:		replace a (sub-)string by another (sub-)string, but case insensitive
+	 * @params:			str = Original string
+	 * 					find = the string to be replaced
+	 * 					replacement = the string that replaces the (sub-)string in the original string
+	 * return			(String) the modified string or the original string if the (sub-)string <find> was not found
+	 */
+	final SimpleJtwigFunction myCaseInsensitiveReplaceFunction = new SimpleJtwigFunction() {
+        @Override
+         public String name() {
+        	  // Define function name here
+              return "ireplace";
+           }
+
+       @Override
+       public   Object execute(FunctionRequest request) {
+           String re = new String();
+            if (request.getNumberOfArguments() == 3 /* Define number of arguments */ ) {
+                if (request.get(0) instanceof String && request.get(1) instanceof String && request.get(2) instanceof String) {
+                	
+                 	// Define the action here
+                    String str = request.getEnvironment().getValueEnvironment().getStringConverter().convert(request.get(0)).toLowerCase();
+                    String find = request.getEnvironment().getValueEnvironment().getStringConverter().convert(request.get(1)).toLowerCase();
+                    String replacement = request.getEnvironment().getValueEnvironment().getStringConverter().convert(request.get(2));
+                    re = str.replace(find, replacement);
+                }
+            }
+
+           return (re);
+       }
+   };
+   
+   /*
+	 * Description:		replace null by empty string
+	 * @params:			str = Original string
+	 * 					
+	 * return			(String) if null empty string otherwise original string
+	 */
+	final SimpleJtwigFunction nullToEmptyStringFunction = new SimpleJtwigFunction() {
+       @Override
+        public String name() {
+       	  // Define function name here
+             return "null2empty";
+          }
+
+      @Override
+      public   Object execute(FunctionRequest request) {
+    	  String str = new String();
+          if (request.getNumberOfArguments() >= 1 /* Define number of arguments */ ) 
+          {
+        	   
+                	// Define the action here
+                   str = request.getEnvironment().getValueEnvironment().getStringConverter().convert(request.get(0));
+	               if (str == null || str.equals("null") ) {
+	               		str = "";
+	               }
+	               System.out.println("value: "+str);
+          }
+
+          return (str);
+      }
+  };
+  
    
 	/*
 	 * Description:		Generates a QR-Code, Barcode or Data Matrix image
@@ -104,6 +172,8 @@ public class twigHelper {
 	       .functions()
 	       		// Register your functions here
 	           	.add(myReplaceFunction)
+	           	.add(myCaseInsensitiveReplaceFunction)
+	           	.add(nullToEmptyStringFunction)
 	           	.add(generateCodeFunction)
 	      .and()
       .build();
