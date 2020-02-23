@@ -232,7 +232,7 @@
 
 
         {# Prepartion abbreviations #}
-        {% set prep = {
+        {% set prepAbbrev = {
         	"Round skin" : 		"rd. skin",
         	"Skeleton" : 		"skel.",
         	"Skeleton parts" : 	"skel. parts",
@@ -248,7 +248,7 @@
         %}
         
         {# Age abbreviations #}
-        {% set age = {
+        {% set ageAbbrev = {
             "adult": 		"ad.",
             "embryo": 		"embr.",
             "fetus": 		"fet.",
@@ -272,8 +272,11 @@
 		<tr>
 	{% endif %}
 
-		{% set filename = replace(data.reservedText, '/', '_') %}
-		{% set qrImage = generateCode('http://coll.mfn-berlin.de/u/'~ data.reservedText, filename , 'QR-Code') %}
+		{# Rules for QR codes #}
+    		{% set filename = replace(data.reservedText, '/', '_') %}
+    		{% if (data.reservedText is defined) and (data.reservedText is not empty) and (data.reservedText is not null) %}
+    		    {% set qrImage = generateCode('http://coll.mfn-berlin.de/u/'~ data.reservedText, filename , 'QR-Code') %}
+    		{% endif %}
 		
 		{# Some taxon rules #}
 			{% set taxonStyle = 'taxon' %}
@@ -313,25 +316,33 @@
         	{% endif %}
         	
         {# Prepartion rule #}
-        	{% if (prep[data.name] is not defined) or (prep[data.name] is empty) or (prep[data.name] is null) %}
+        	{% if (prepAbbrev[data.name] is not defined) or (prepAbbrev[data.name] is empty) or (prepAbbrev[data.name] is null) %}
         		{% set preparation = lower(data.name) %}
         	{% else %}
-        		{% set preparation = prep[data.name] %}
+        		{% set preparation = prepAbbrev[data.name] %}
         	{% endif %}
         
         {# Merge sex and age #}
-		{% if (data.text8 is not null) or (data.text8 is not empty) %}
-			{% set sex_age = data.text8 %}
-		{% endif %}
-		
-		{% if (data.text7 is not null) and (data.text7 is not empty) %}
-			{% if (age[data.text7] is not defined) or (age[data.text7] is empty) or (age[data.text7] is null) %}
-			    {% set sex_age = sex_age ~ ', ' ~ (lower(data.text7)) %}
-			{% else %}
-				{% set sex_age = sex_age ~ ', ' ~ (age[data.text7]) %}
-			{% endif %}
-		{% endif %}
-		
+    		{% if (data.text8 is not null) or (data.text8 is not empty) %}
+    			{% set sex = data.text8 %}
+    		{% endif %}
+    		{% if (data.text7 is not null) and (data.text7 is not empty) %}
+    			{% if (ageAbbrev[data.text7] is not defined) or (ageAbbrev[data.text7] is empty) or (ageAbbrev[data.text7] is null) %}
+    			    {% set age = lower(data.text7) %}
+    			{% else %}
+    				{% set age = ageAbbrev[data.text7] %}
+    			{% endif %}
+    		{% endif %}
+    		{% if (age is not empty) and (age is defined) and (age is not null) and (sex is not empty) and (sex is defined) and (sex is not null) %}
+    			{% set sex_age = sex ~ ', ' ~ age %}
+    		{% elseif age is empty %}
+    		    {% set sex_age = null2empty(sex) %}
+    		{% elseif sex is empty %}
+    		    {% set sex_age = null2empty(age) %}
+    		{% else %}
+    			{% set sex_age = '' %}
+    		{% endif %}
+    		
 
 		
 		
