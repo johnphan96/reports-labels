@@ -306,16 +306,22 @@
 		
 		
 		{# Some date rules #}
-			{% if (data.startDateNumericYear is not defined) or (data.startDateNumericYear is null) or (data.startDateNumericYear is empty) %}
-    			{% set date = data.dateAccessioned %}
-    			{% set dateType = 'Date of entry' %}
+			{% if ((data.startDate is not defined) or (data.startDate is null) or (data.startDate is empty)) 
+			    and ((data.endDate is not defined) or (data.endDate is null) or (data.endDate is empty)) %}
+        			{% set date = data.dateAccessioned %}
+        			{% set dateType = 'Date of entry' %}
     		{% else %}
     			{% set dateType = 'Coll. date' %}
-    			{% if (data.endDateNumericYear is defined) and (data.endDateNumericYear is not null) and (data.endDateNumericYear is not empty) %}
-        			{% set date = data.startDateNumericYear ~ '-' ~ data.endDateNumericYear %}
+    			{% if (data.endDate is defined) and (data.endDate is not null) and (data.endDate is not empty) %}
+        			{% set date = data.startDate ~ '-' ~ data.endDate %}
         		{% else %}
-        			{% set date = data.startDateNumericYear %}
+        			{% set date = data.startDate %}
         		{% endif %}
+        	{% endif %}
+        	{% if ((data.startDate is not defined) or (data.startDate is null) or (data.startDate is empty)) 
+        	    and ((data.dateAccessioned is not defined) or (data.dateAccessioned is null) or (data.dateAccessioned is empty)) 
+        	    and ((data.endDate is not defined) or (data.endDate is null) or (data.endDate is empty)) %}
+        		    {% set dateType = 'Coll. date' %}
         	{% endif %}
         	
         {# Prepartion rule #}
