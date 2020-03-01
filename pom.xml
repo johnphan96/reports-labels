@@ -110,12 +110,7 @@
 			<version>${openhtml.version}</version>
 		</dependency>
 
-		<!-- dependency >
-			< Optional, leave out if you do not need HTML5 parsing support. >
-			<groupId>com.openhtmltopdf</groupId>
-			<artifactId>openhtmltopdf-jsoup-dom-converter</artifactId>
-			<version>${openhtml.version}</version>
-		</dependency -->
+	
 
 		<dependency>
 			<!-- Optional, leave out if you do not need logging via slf4j. -->

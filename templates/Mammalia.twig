@@ -12,12 +12,12 @@
       @page {
         background: white;
         font-family: Arial, sans-serif;
-        font-size: 7px;
+        font-size: 7pt;
         width: 210mm;
     	height: 297mm;
-    	margin-top: 10mm;
-        margin-left: 20mm;
-        margin-bottom: 10mm;
+    	margin-top: 0mm;
+        margin-left: 0mm;
+        margin-bottom: 0mm;
         margin-right: 10mm;
       }
             
@@ -29,7 +29,7 @@
       body {
         background-color: white;
         font-family: Arial, sans-serif;
-        font-size: 7px;
+        font-size: 7pt;
        /* border: 1px solid black;*/
         margin: 0;
         padding: 0;
@@ -62,8 +62,8 @@
 		max-width: 170mm;
 		min-width: 170mm;
 		
-		height: 44mm !important;
-		max-height: 44mm;
+		height: 50mm !important;
+		max-height: 50mm;
 		
 		margin: 0;
 		padding: 0;
@@ -84,16 +84,18 @@
 	    width: 85mm;
 		min-width: 85mm;
 		max-width: 85mm;
-		height: 44mm !important;
-	  	max-height: 44mm;
-	  	min-height: 44mm;
+		height: 50mm !important;
+	  	max-height: 50mm;
+	  	min-height: 50mm;
 	  	
 		border: 1px grey dashed;
+		border-left: none;
+		border-top: none;
 		margin: 0;
 		padding: 0;
 		overflow: hidden;
 		word-wrap:break-word;
-		font-size: 7px;
+		font-size: 7pt;
 		/*vertical-align: middle;*/
 	  }
 	  
@@ -106,7 +108,7 @@
 	  
 	  table.subtable table th{
 	  	font-weight: normal;
-	  	max-width: 15mm;
+	  	max-width: 17mm;
 	  	padding-bottom: 2px;
 	  	padding-right: 7px;
 	  }
@@ -131,9 +133,9 @@
 	  }
 	  
 	  table.subtable td.center{
-	    width: 10mm;
-	  	max-width: 10mm;
-	  	min-width: 10mm;
+	    width: 14mm;
+	  	max-width: 14mm;
+	  	min-width: 14mm;
 	  	padding: 0;
 	  }
 	 
@@ -154,6 +156,7 @@
 	  table.subtable td.right div {
 	  	padding: 0;
 	  	margin: 0;
+	  	margin-bottom: 3mm;
 	  	width: 4mm;
 	  	/*overflow: hidden;*/
 	  	/*height: 4mm;*/
@@ -171,18 +174,18 @@
 	  }
 	  
 	  .taxon {
-	  	font-size: 11px;
+	  	font-size: 11pt;
 	  	font-weight: bold;
 	  	font-style: italic;
 	  }
 	  
 	  .higherTaxon {
-	  	font-size: 11px;
+	  	font-size: 11pt;
 	  	font-weight: bold;
 	  }
 	  
 	  .authorYear {
-	  	font-size: 7px;
+	  	font-size: 7pt;
 	  	font-weight: normal;
 	  }
 	  
@@ -193,10 +196,10 @@
 	  }
 	  
 	  .GIN-prefix {
-	  	font-size: 11px;
+	  	font-size: 11pt;
 	  }
 	  .catalogNumber {
-	  	font-size: 18px;
+	  	font-size: 18pt;
 	  	font-weight: bold;
 	  	letter-spacing: 2pt;
 	  }
@@ -209,8 +212,8 @@
           margin-top: 5px;
         }
 	  .qrcode {
-		width: 12mm;
-		height: 12mm;
+		width: 16mm;
+		height: 16mm;
 		border: none;
 		
 	  }
@@ -228,7 +231,7 @@
 {% set d = 0 %}
 {% set max = dataArray|length %}
 {% set cells = 2 %}
-{% set cellsPerPage = 12 %}
+{% set cellsPerPage = 10 %}
 
 
         {# Prepartion abbreviations #}
@@ -354,7 +357,7 @@
 				</tr>
 				<tr><td class="left">
 						<br/>
-    					<table>
+    					<table class="data">
         					<tr><th>Prep.:</th><td>{{ preparation }}</td></tr>
         					<tr><th>Sex, Age:</th><td>{{ null2empty(sex_age)|lower }}</td></tr>
         					<tr><th>Locality:</th><td>{{ null2empty(data.localityName) }}</td></tr>
