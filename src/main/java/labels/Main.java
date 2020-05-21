@@ -95,7 +95,7 @@ public class Main {
     				{	
     					//res.redirect("/labels/"+API_VERSION+"/template/choose", 303);
     					TemplateCreator tmpl = new TemplateCreator(op);
-			        	tmpl.baseURL = "http://"+req.host();
+			        	//tmpl.baseURL = "http://"+req.host();
 			        	tmpl.target = tmpl.baseURL+ req.pathInfo();
 			        	tmpl.origReq = req;
 			        	
@@ -104,7 +104,8 @@ public class Main {
     				else {
     					String format = req.queryParams("format");
     					String data = req.queryParams("data");
-    					op.baseURL = "http://"+req.host() + req.pathInfo();
+    					//op.baseURL = "http://"+req.host() + req.pathInfo();
+    					op.baseURL = op.baseURL + req.pathInfo();
     					
     					System.out.println(op.baseURL);
     					
