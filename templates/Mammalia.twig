@@ -62,8 +62,8 @@
 		max-width: 170mm;
 		min-width: 170mm;
 		
-		height: 50mm !important;
-		max-height: 50mm;
+		height: 49mm !important;
+		max-height: 49mm;
 		
 		margin: 0;
 		padding: 0;
@@ -84,9 +84,9 @@
 	    width: 85mm;
 		min-width: 85mm;
 		max-width: 85mm;
-		height: 50mm !important;
-	  	max-height: 50mm;
-	  	min-height: 50mm;
+		height: 49mm !important;
+	  	max-height: 49mm;
+	  	min-height: 49mm;
 	  	
 		border: 1px grey dashed;
 		border-left: none;
@@ -101,7 +101,7 @@
 	  
 	  table.subtable {
 	  	/*border: 1px grey solid;*/
-	  	width: 84mm;
+	  	width: 85mm;
 	  	margin: 0; 
 	  	margin-top: 3mm;
 	  }
@@ -120,7 +120,7 @@
 	  	padding-bottom: 2px;
 	 	/*border: 1px blue dashed;*/
 	  }
-	  
+	   
 	  table.subtable td.left{
 	    width: 50mm;
 	  	max-width: 50mm;
@@ -199,7 +199,7 @@
 	  	font-size: 11pt;
 	  }
 	  .catalogNumber {
-	  	font-size: 18pt;
+	  	font-size: 25pt;
 	  	font-weight: bold;
 	  	letter-spacing: 2pt;
 	  }
@@ -231,7 +231,7 @@
 {% set d = 0 %}
 {% set max = dataArray|length %}
 {% set cells = 2 %}
-{% set cellsPerPage = 10 %}
+{% set cellsPerPage = 12 %}
 
 
         {# Prepartion abbreviations #}
@@ -283,11 +283,11 @@
 		
 		{# Some taxon rules #}
 			{% set taxonStyle = 'taxon' %}
-    		{% if (data.Genus is not empty) and (data.Genus is not null) %}
+    		{% if (data.Genus|length) and (data.Genus is not empty) and (data.Genus is not null) %}
     			{% set taxon = data.Genus %}
-    			{% if (data.Species is not empty) and (data.Species is not null) %}
+    			{% if (data.Species|length) and (data.Species is not empty) and (data.Species is not null) %}
     				{% set taxon = taxon ~ ' ' ~ data.Species %}
-    				{% if (data.Subspecies is not empty) and (data.Subspecies is not null) %}
+    				{% if (data.Subspecies|length) and (data.Subspecies is not empty) and (data.Subspecies is not null) %}
     				    {% set taxon = taxon ~ ' ' ~ data.Subspecies %}
     				{% endif %}
     			{% endif %}
@@ -306,13 +306,14 @@
 		
 		
 		{# Some date rules #}
+			{% set date = '' %}
 			{% if ((data.startDate is not defined) or (data.startDate is null) or (data.startDate is empty)) 
 			    and ((data.endDate is not defined) or (data.endDate is null) or (data.endDate is empty)) %}
         			{% set date = data.dateAccessioned %}
         			{% set dateType = 'Date of entry' %}
     		{% else %}
     			{% set dateType = 'Coll. date' %}
-    			{% if (data.endDate is defined) and (data.endDate is not null) and (data.endDate is not empty) %}
+    			{% if (data.endDate|length) and (data.endDate is defined) and (data.endDate is not null) and (data.endDate is not empty) %}
         			{% set date = data.startDate ~ '-' ~ data.endDate %}
         		{% else %}
         			{% set date = data.startDate %}
@@ -352,13 +353,126 @@
     			{% set sex_age = '' %}
     		{% endif %}
     		
-
-		
+		{# Collector and Donor #}
+			{% set CollectorDonor = null %}
+			{% set CollectorDonorType = 'Collector' %}
+			{% if data.collectors|length %}
+				{% set CollectorDonorArray = data.collectors|split(';') %}
+				{% if CollectorDonorArray|length %}
+					{% for CD in CollectorDonorArray %}
+						{% set CDArray = CD|split(',') %}
+						{% set x = 0 %}
+						{% if CDArray|length %}
+							{% for CDlastname in CDArray %}
+								{% if CDlastname|length %}
+									{% if x < 1 %}
+										{% if CollectorDonor is null %}
+											{% set CollectorDonor = CDlastname   %}
+										{% else %}
+											{% set CollectorDonor = CollectorDonor ~ '; ' ~ CDlastname   %}
+										{% endif %}	
+									{% endif %}	
+									{% set x = x+1 %}
+								{% endif %}	
+							{% endfor %}
+						{% else %}
+							{% if CollectorDonor is null %}
+								{% set CollectorDonor = CD  %}
+							{% else %}
+									{% set CollectorDonor = CollectorDonor ~ '; ' ~ CD   %}
+							{% endif %}	
+						{% endif %}	
+					{% endfor %}
+				{% else %}
+					{% set CDArray = data.collectors|split(',') %}
+					{% set x = 0 %}
+					{% if CDArray|length %}
+						{% for CDlastname in CDArray %}
+							{% if CDlastname|length %}
+								{% if x < 1 %}
+									{% if CollectorDonor is null %}
+										{% set CollectorDonor = CDlastname  %}
+									{% else %}
+										{% set CollectorDonor = CollectorDonor ~ '; ' ~ CDlastname  %}
+									{% endif %}	
+								{% endif %}	
+								{% set x = x+1 %}
+							{% endif %}
+						{% endfor %}							
+					{% else %}
+						{% if CollectorDonor is null %}
+							{% set CollectorDonor = data.collectors   %}
+						{% else %}
+								{% set CollectorDonor = CollectorDonor ~ '; ' ~ data.collectors  %}
+						{% endif %}
+					{% endif %}
+				{% endif %}
+			{% endif %}
+			
+			{% if CollectorDonor is empty %}
+				{% set CollectorDonorType = 'Donor' %}
+				{% if data.accessionAgents|length %}
+					{% set CollectorDonorArray = data.accessionAgents|split(';') %}
+					{% if CollectorDonorArray|length %}
+						{% for CD in CollectorDonorArray %}
+							{% set CDArray = CD|split(',') %}
+							{% set x = 0 %}
+							{% if CDArray|length %}
+								{% for CDlastname in CDArray %}
+									{% if CDlastname|length %}
+										{% if x < 1 %}
+											{% if CollectorDonor is null %}
+												{% set CollectorDonor = replace(CDlastname, ' - donor','') %}
+											{% else %}
+												{% set CollectorDonor = CollectorDonor ~ '; ' ~ replace(CDlastname, ' - donor','') %}
+											{% endif %}	
+										{% endif %}	
+										{% set x = x+1 %}	
+									{% endif %}
+								{% endfor %}
+							{% else %}
+								{% if CollectorDonor is null %}
+									{% set CollectorDonor = replace(CD, ' - donor','') %}
+								{% else %}
+										{% set CollectorDonor = CollectorDonor ~ '; ' ~ replace(CD, ' - donor','') %}
+								{% endif %}	
+							{% endif %}	
+						{% endfor %}
+					{% else %}
+						{% set CDArray = data.accessionAgents|split(',') %}
+						{% set x = 0 %}
+						{% if CDArray|length %}
+							{% for CDlastname in CDArray %}
+								{% if CDlastname|length %}
+									{% if x < 1 %}
+										{% if CollectorDonor is null %}
+											{% set CollectorDonor = replace(CDlastname, ' - donor','') %}
+										{% else %}
+											{% set CollectorDonor = CollectorDonor ~ '; ' ~ replace(CDlastname, ' - donor','') %}
+										{% endif %}	
+									{% endif %}	
+									{% set x = x+1 %}
+								{% endif %}
+							{% endfor %}							
+						{% else %}
+							{% if CollectorDonor is null %}
+								{% set CollectorDonor = ireplace(data.accessionAgents, ' - donor','') %}
+							{% else %}
+									{% set CollectorDonor = CollectorDonor ~ '; ' ~ replace(data.accessionAgents, ' - donor','') %}
+							{% endif %}
+						{% endif %}
+					{% endif %}
+				{% endif %}
+			{% endif %}
+			
+			{% if CollectorDonor is null %}
+				{% set CollectorDonorType = 'Collector' %}
+			{% endif %}
 		
 		<td class="main">
 			<table class="subtable">
 				<tr>
-					<td class="left" colspan="2"><div><span class="{{ taxonStyle }}">{{ taxon }}</span> <span class="authorYear">{{data.author}}</span></div></td>
+					<td class="left" colspan="2"><div><span class="{{ taxonStyle }}">{{ taxon }}</span> <span class="authorYear">{{ null2empty(data.author) }}</span></div></td>
 					<td class="right" rowspan="3"><div>http://coll.mfn-berlin.de/u/{{ data.reservedText }}</div></td>
 				</tr>
 				<tr><td class="left">
@@ -368,7 +482,7 @@
         					<tr><th>Sex, Age:</th><td>{{ null2empty(sex_age)|lower }}</td></tr>
         					<tr><th>Locality:</th><td>{{ null2empty(data.localityName) }}</td></tr>
         					<tr><th>Country:</th><td>{{ null2empty(data.Country) }}</td></tr>
-        					<tr><th>Collector:</th><td>{{ null2empty(data.lastName) }}</td></tr>
+        					<tr><th>{{ CollectorDonorType }}:</th><td>{{ null2empty(CollectorDonor) }}</td></tr>
         					<tr><th>{{ dateType }}:</th><td>{{ null2empty(date) }}</td></tr>
     					</table>
 					</td>
@@ -376,7 +490,7 @@
 					
 				</tr>
 				<tr class="lastRow">
-					<td class="left"><div class="GIN"><span class="GIN-prefix">ZMB_Mam_</span><span class="catalogNumber">{{ ireplace(data.catalogNumber, 'ZMB_MAM_', '')|null2empty }}</span></div></td>
+					<td class="left"><br/><div class="GIN"><span class="GIN-prefix">ZMB_Mam_</span><span class="catalogNumber">{{ ireplace(data.catalogNumber, 'ZMB_MAM_', '')|null2empty }}</span></div></td>
 					
 					<td class="center" align="right"><img class="qrcode" src="{{ qrImage }}"/></td>
 					

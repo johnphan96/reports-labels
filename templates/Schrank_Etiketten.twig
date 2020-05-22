@@ -1,0 +1,77 @@
+{% extends "bases/Herma_9643.twig" %}
+
+{% block collspace %}{% endblock %}
+{% block rowspace %}{% endblock %}
+
+{% block style %}
+	  
+	  table.subtable {
+	  	max-width: 80mm;
+	  	min-width: 80mm;
+	  	width: 80mm;
+	  	margin: 0; 
+		padding: 0;
+		border: none;
+		border-collapse: collapse;
+		table-layout:fixed;
+		max-height: 40mm;
+		min-height: 40mm;
+		height: 40mm;
+	  }
+	  
+	  table.subtable td {
+		padding: 0;
+		margin: 0;
+		vertical-align: middle;
+		overflow: hidden;
+		max-height: 39mm;
+		min-height: 39mm;
+		height: 39mm;
+	  }
+	  
+	  .sub {
+		font-family: monospace;
+	  	font-size: 13pt;
+	  	font-weight: bold;
+	  	word-wrap: break-word;
+		overflow: hidden;
+		white-space: pre-wrap;
+		max-width: 39mm;
+		min-width: 39mm;
+		width: 39mm;
+		height: 39mm;
+		max-height: 39mm;
+		min-height: 39mm;
+		vertical-align: middle;
+	  }
+	  
+	  .subcode {
+	  	word-wrap: nowrap;
+		overflow: hidden;
+		white-space: nowrap;
+		line-height: 0px;
+	  }
+
+	  .qrcode {
+		width: 35mm;
+		height: 35mm;
+		max-height: 35mm;
+		min-height: 35mm;
+		border: none;
+	
+	  }
+	  
+{% endblock %}
+
+{% block content %}
+
+	<table class="subtable">
+		{% set filename = replace(data.code, '/', '_') %}
+		{% set qrcodePath = generateCode(data.NURI, filename , 'QR-Code') %}
+		<tr>
+			<td class="sub subcode"><img class="qrcode" src="{{ qrcodePath }}" /></td>
+			<td class="sub">{{ replace(replace(data.NURI, '/u/', ' /u/'), '.mfn-', '. mfn-') }}</td>
+		</tr>
+	</table>
+
+{% endblock %}
