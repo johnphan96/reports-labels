@@ -109,9 +109,6 @@
 			<artifactId>openhtmltopdf-rtl-support</artifactId>
 			<version>${openhtml.version}</version>
 		</dependency>
-
-	
-
 		<dependency>
 			<!-- Optional, leave out if you do not need logging via slf4j. -->
 			<groupId>com.openhtmltopdf</groupId>
