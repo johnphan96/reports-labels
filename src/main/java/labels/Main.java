@@ -105,7 +105,7 @@ public class Main {
     					String format = req.queryParams("format");
     					String data = req.queryParams("data");
     					//op.baseURL = "http://"+req.host() + req.pathInfo();
-    					op.baseURL = op.baseURL + req.pathInfo();
+    					//op.baseURL = op.baseURL + req.pathInfo();
     					
     					System.out.println(op.baseURL);
     					
