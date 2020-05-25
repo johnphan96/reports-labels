@@ -30,8 +30,10 @@
         background-color: white;
         font-family: Arial, sans-serif;
         font-size: 7pt;
+		letter-spacing: 0pt;
        /* border: 1px solid black;*/
         margin: 0;
+		margin-left: 5mm;
         padding: 0;
         text-align: left;
 		width: 210mm;
@@ -88,7 +90,7 @@
 	  	max-height: 49mm;
 	  	min-height: 49mm;
 	  	
-		border: 1px grey dashed;
+		border: 0.5px #EEEEEE dotted;
 		border-left: none;
 		border-top: none;
 		margin: 0;
@@ -99,8 +101,19 @@
 		/*vertical-align: middle;*/
 	  }
 	  
+	  td.col-1 {
+		margin-left: 0mm;
+		margin-right: 0mm;
+		padding: 0;
+	  }
+	  
+	  td.col-2 {
+		padding-left: 5mm;
+		padding-right: 0mm;
+	  }
+	  
 	  table.subtable {
-	  	/*border: 1px grey solid;*/
+	  	/*border: 1px lightgrey solid;*/
 	  	width: 85mm;
 	  	margin: 0; 
 	  	margin-top: 3mm;
@@ -225,7 +238,7 @@
     </style>
   </head>
   <body>
-
+<!--
 {% set i = 0 %}
 {% set p = 0 %}
 {% set d = 0 %}
@@ -264,17 +277,16 @@
         	}
         %}
 
-
-{% for data in dataArray %}
-	{% if p == 0 %}
-		<table class="maintable">
-		<tbody>
-	{% endif %}
-	
-	{% if i == 0 %}
-		<tr>
-	{% endif %}
-
+-->
+	{% for data in dataArray %}
+		{% if p == 0 %}
+			<table class="maintable">
+			<tbody>
+		{% endif %}
+		{% if i == 0 %}
+			<tr>
+		{% endif %}  
+<!--
 		{# Rules for QR codes #}
     		{% set filename = replace(data.reservedText, '/', '_') %}
     		{% if (data.reservedText is defined) and (data.reservedText is not empty) and (data.reservedText is not null) %}
@@ -422,9 +434,9 @@
 									{% if CDlastname|length %}
 										{% if x < 1 %}
 											{% if CollectorDonor is null %}
-												{% set CollectorDonor = replace(CDlastname, ' - donor','') %}
+												{% set CollectorDonor = replace(replace(CDlastname, ' - donor',''), ' - Vendor','') %}
 											{% else %}
-												{% set CollectorDonor = CollectorDonor ~ '; ' ~ replace(CDlastname, ' - donor','') %}
+												{% set CollectorDonor = CollectorDonor ~ '; ' ~ replace(replace(CDlastname, ' - donor',''), ' - Vendor','') %}
 											{% endif %}	
 										{% endif %}	
 										{% set x = x+1 %}	
@@ -432,9 +444,9 @@
 								{% endfor %}
 							{% else %}
 								{% if CollectorDonor is null %}
-									{% set CollectorDonor = replace(CD, ' - donor','') %}
+									{% set CollectorDonor = replace(replace(CD, ' - donor',''), ' - Vendor','') %}
 								{% else %}
-										{% set CollectorDonor = CollectorDonor ~ '; ' ~ replace(CD, ' - donor','') %}
+										{% set CollectorDonor = CollectorDonor ~ '; ' ~ replace(replace(CD, ' - donor',''), ' - Vendor','') %}
 								{% endif %}	
 							{% endif %}	
 						{% endfor %}
@@ -446,9 +458,9 @@
 								{% if CDlastname|length %}
 									{% if x < 1 %}
 										{% if CollectorDonor is null %}
-											{% set CollectorDonor = replace(CDlastname, ' - donor','') %}
+											{% set CollectorDonor = replace(replace(CDlastname, ' - donor',''), ' - Vendor','') %}
 										{% else %}
-											{% set CollectorDonor = CollectorDonor ~ '; ' ~ replace(CDlastname, ' - donor','') %}
+											{% set CollectorDonor = CollectorDonor ~ '; ' ~ replace(replace(CDlastname, ' - donor',''), ' - Vendor','') %}
 										{% endif %}	
 									{% endif %}	
 									{% set x = x+1 %}
@@ -456,9 +468,9 @@
 							{% endfor %}							
 						{% else %}
 							{% if CollectorDonor is null %}
-								{% set CollectorDonor = ireplace(data.accessionAgents, ' - donor','') %}
+								{% set CollectorDonor = replace(replace(data.accessionAgents, ' - donor',''), ' - Vendor','') %}
 							{% else %}
-									{% set CollectorDonor = CollectorDonor ~ '; ' ~ replace(data.accessionAgents, ' - donor','') %}
+									{% set CollectorDonor = CollectorDonor ~ '; ' ~ replace(replace(data.accessionAgents, ' - donor',''), ' - Vendor','') %}
 							{% endif %}
 						{% endif %}
 					{% endif %}
@@ -468,8 +480,11 @@
 			{% if CollectorDonor is null %}
 				{% set CollectorDonorType = 'Collector' %}
 			{% endif %}
-		
-		<td class="main">
+			
+			
+			{% set columnClass = 'col-' ~ (i+1) %}
+-->		
+		<td class="main {{ columnClass }}">
 			<table class="subtable">
 				<tr>
 					<td class="left" colspan="2"><div><span class="{{ taxonStyle }}">{{ taxon }}</span> <span class="authorYear">{{ null2empty(data.author) }}</span></div></td>
@@ -507,7 +522,7 @@
 	{% endif %}
 	
 	{% if p == cellsPerPage-1 or d == max-1 %}
-		</tbody></table><br/><br/>
+		</tbody></table>
 		{% set p = 0 %}
 		{% set i = 0 %}
 	{% else %}
@@ -517,6 +532,5 @@
 	{% set d = d+1 %}
 		
 {% endfor %}
-
   </body>
 </html>
