@@ -180,7 +180,7 @@ public class LabelCreator {
                     	}
                      }*/
                      //template = parseTemplate();
-                     template = parseTwigTemplate();
+                     template = parseTwigTemplate("PDF");
                      
                      builder.withHtmlContent(template, "/");
                      
@@ -205,8 +205,11 @@ public class LabelCreator {
               }
 	}
 	
-	
 	public String parseTwigTemplate() throws MalformedURLException, IOException{
+		return parseTwigTemplate(null);
+	}
+	
+	public String parseTwigTemplate(String format) throws MalformedURLException, IOException{
 		
 		String twig = null;
 	
@@ -218,8 +221,11 @@ public class LabelCreator {
 		
 		JtwigTemplate template = JtwigTemplate.fileTemplate(new File(templateFile).getAbsolutePath(), twigConf.configuration);
 		JtwigModel model = JtwigModel.newModel().with("dataArray", data);
+		
+		model.with("format", format);
 
-		System.out.println(data);	
+		if(options.debug)
+			System.out.println(data);	
 		
 		twig = template.render(model);
 		
