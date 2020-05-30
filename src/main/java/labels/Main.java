@@ -1,7 +1,6 @@
 package labels;
 
 import static spark.Spark.*;
-import static spark.Spark.staticFiles;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,12 +62,27 @@ public class Main {
     	//LabelCreator labels = new LabelCreator(op);
     	
     	staticFiles.location("/public");  // Static (web accessible) files (e.g. CSS files etc.) can be placed in src/main/resources/public 
+    	staticFiles.header("Access-Control-Allow-Origin", "*");  // static files can be accessed from anywhere
     	
     	// any empty action will be redirected to the API documentation
     	redirect.any("/", "/labels/"+API_VERSION+"/");
     	redirect.any("/labels", "/labels/"+API_VERSION+"/");
     	redirect.any("/labels/", "/labels/"+API_VERSION+"/");	
     	redirect.any("/labels/"+API_VERSION, "/labels/"+API_VERSION+"/");	
+    	
+    	options("/*", (req, res) -> {
+    		String accessControlRequestHeaders = req.headers("Access-Control-Request-Headers");
+    		if (accessControlRequestHeaders != null) {
+    			res.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+    		}
+
+    		String accessControlRequestMethod = req.headers("Access-Control-Request-Method");
+    		if (accessControlRequestMethod != null) {
+    			res.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+    		}
+
+            return "OK";
+    	});
     	
     	try {
 			// Build swagger json description
@@ -211,6 +225,12 @@ public class Main {
 			            return res.raw();
 		        	
 		        });
+		        
+		        // TODO:  set option for configuring Allow-Origin through config.ini
+				/*before((req, res) -> {
+					res.header("Access-Control-Allow-Origin", "*");
+					res.header("Access-Control-Allow-Headers", "*");
+				});*/
 		        
 		        // TODO: make template editable (e.g. with (static) implementation of WYSIWYG Aloha Editor (http://alohoeditor.org))
 		        // get("/template/edit", (req, res) -> {
