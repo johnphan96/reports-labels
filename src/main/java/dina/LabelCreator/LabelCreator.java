@@ -223,6 +223,8 @@ public class LabelCreator {
 		JtwigModel model = JtwigModel.newModel().with("dataArray", data);
 		
 		model.with("format", format);
+		model.with("baseURL", baseURL);
+		model.with("staticFiles", baseURL+"/static");
 
 		if(options.debug)
 			System.out.println(data);	

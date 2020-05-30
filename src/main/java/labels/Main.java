@@ -16,12 +16,14 @@ import io.swagger.annotations.Tag;
 import spark.embeddedserver.EmbeddedServers;
 import spark.embeddedserver.jetty.EmbeddedJettyServer;
 import spark.embeddedserver.jetty.JettyHandler;
+import static spark.debug.DebugScreen.enableDebugScreen;
 import spark.http.matching.MatcherFilter;
 import spark.route.Routes;
 import spark.staticfiles.StaticFilesConfiguration;
 import dina.LabelCreator.Options.Options;
 import dina.TemplateCreator.TemplateCreator;
 import dina.api.SwaggerParser;
+import dina.api.requests.AccessStatic;
 import dina.api.requests.AccessTmp;
 import dina.api.requests.CreateHTML;
 import dina.api.requests.CreatePDF;
@@ -60,6 +62,7 @@ public class Main {
     	Options op = new Options();
     	op.setOptions(args);
     	//LabelCreator labels = new LabelCreator(op);
+
     	
     	staticFiles.location("/public");  // Static (web accessible) files (e.g. CSS files etc.) can be placed in src/main/resources/public 
     	staticFiles.header("Access-Control-Allow-Origin", "*");  // static files can be accessed from anywhere
@@ -68,7 +71,7 @@ public class Main {
     	redirect.any("/", "/labels/"+API_VERSION+"/");
     	redirect.any("/labels", "/labels/"+API_VERSION+"/");
     	redirect.any("/labels/", "/labels/"+API_VERSION+"/");	
-    	redirect.any("/labels/"+API_VERSION, "/labels/"+API_VERSION+"/");	
+    	redirect.any("/labels/"+API_VERSION, "/labels/"+API_VERSION+"/");
     	
     	options("/*", (req, res) -> {
     		String accessControlRequestHeaders = req.headers("Access-Control-Request-Headers");
@@ -97,12 +100,16 @@ public class Main {
 			e.printStackTrace();
 		}
     	
-    	
-    	
     	// Routes other than default Swagger documentation
     	path("/labels", () -> {
     		path("/"+API_VERSION, () -> {
 	    		
+    			get("/static/*", (req, res) -> {
+    	    		
+  				  AccessStatic c = new AccessStatic(op, req, res);
+  		          return c.result();
+    			});
+    			
     			post("/", (req, res) -> {
     				
     				if(req.queryParams("template")==null || req.queryParams("template").isEmpty())
@@ -120,8 +127,6 @@ public class Main {
     					String data = req.queryParams("data");
     					//op.baseURL = "http://"+req.host() + req.pathInfo();
     					//op.baseURL = op.baseURL + req.pathInfo();
-    					
-    					System.out.println(op.baseURL);
     					
     					if(format==null || format.isEmpty())
     						format="html";
@@ -261,6 +266,9 @@ public class Main {
 		        */
 	    	});
     	});
+    	
+    	if(op.debug)
+    		enableDebugScreen(); 
     }
     
     private static JettyHandler setupHandler(Routes routeMatcher, StaticFilesConfiguration staticFilesConfiguration, boolean hasMultipleHandler) {
