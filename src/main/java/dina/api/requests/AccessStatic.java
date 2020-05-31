@@ -46,10 +46,12 @@ public class AccessStatic {
 		   else
 			   if(op.debug)
 				   System.out.println("static file exists!");
-		  
+		
 	       	byte[] bytes = Files.readAllBytes(path);         
 	        HttpServletResponse raw = res.raw();
 	
+	        raw.addHeader("Access-Control-Allow-Origin", "*");
+			raw.addHeader("Access-Control-Allow-Headers", "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,");
 	        //raw.addHeader("Content-Type", "application/octet-stream");
 	        raw.getOutputStream().write(bytes);
 	        raw.getOutputStream().flush();

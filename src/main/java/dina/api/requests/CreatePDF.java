@@ -34,7 +34,8 @@ public class CreatePDF {
 				op.templateFile = op.templateDir+"/"+req.queryParams("template");
 		
 		   LabelCreator labels = new LabelCreator(op, req.queryParams("data"));
-		   labels.baseURL = "http://"+req.host()+req.pathInfo();
+		   labels.baseURL = op.baseURL;
+		   //labels.baseURL = "http://"+req.host()+req.pathInfo();
      	   labels.createPDF();
      	   
      	   if(op.debug)

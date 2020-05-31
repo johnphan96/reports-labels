@@ -66,6 +66,7 @@ public class Main {
     	
     	staticFiles.location("/public");  // Static (web accessible) files (e.g. CSS files etc.) can be placed in src/main/resources/public 
     	staticFiles.header("Access-Control-Allow-Origin", "*");  // static files can be accessed from anywhere
+    	staticFiles.header("Access-Control-Allow-Headers", "*");  // static files can be accessed from anywhere
     	
     	// any empty action will be redirected to the API documentation
     	redirect.any("/", "/labels/"+API_VERSION+"/");
@@ -232,10 +233,10 @@ public class Main {
 		        });
 		        
 		        // TODO:  set option for configuring Allow-Origin through config.ini
-				/*before((req, res) -> {
+				before((req, res) -> {
 					res.header("Access-Control-Allow-Origin", "*");
-					res.header("Access-Control-Allow-Headers", "*");
-				});*/
+					res.header("Access-Control-Allow-Headers", "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,");
+				});
 		        
 		        // TODO: make template editable (e.g. with (static) implementation of WYSIWYG Aloha Editor (http://alohoeditor.org))
 		        // get("/template/edit", (req, res) -> {

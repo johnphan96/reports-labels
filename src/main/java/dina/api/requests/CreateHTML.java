@@ -29,7 +29,8 @@ public class CreateHTML {
 			   op.templateFile = op.templateDir+"/"+req.queryParams("template");
 		
 		   LabelCreator labels = new LabelCreator(op, req.queryParams("data"));
-		   labels.baseURL = "http://"+req.host()+req.pathInfo();
+		   labels.baseURL = op.baseURL;
+		   //labels.baseURL = "http://"+req.host()+req.pathInfo();
 		   //String re = labels.parseTemplate();
 
            String re = labels.parseTwigTemplate("HTML");
