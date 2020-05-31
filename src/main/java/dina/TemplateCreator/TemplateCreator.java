@@ -69,14 +69,18 @@ public class TemplateCreator {
 	
 	public JSONObject getTemplates(String subDir) {
 		
-		final File folder = new File(options.templateDir+"/"+subDir);
 		JSONObject ret = new JSONObject();
+		final File folder = new File(options.templateDir+"/"+subDir);	
+		
+		if(folder.isHidden())
+			return ret;
+		
 		ret.put("groups", new JSONArray());
 		JSONArray out = new JSONArray();
 
         // directories need to be listed as groups before files
 		for (final File fileEntry : folder.listFiles()) {
-			if (fileEntry.isDirectory()) {
+			if (fileEntry.isDirectory() && !fileEntry.isHidden()) {
 	        	JSONObject tmpl = new JSONObject();
 	        	JSONArray groups = ret.getJSONArray("groups");
 	        	groups.add(groups.size(), subDir+"/"+fileEntry.getName());
@@ -90,7 +94,7 @@ public class TemplateCreator {
 
 		// now list the files
 		for (final File fileEntry : folder.listFiles()) {
-	        if (fileEntry.isDirectory()) {
+	        if (fileEntry.isDirectory() || fileEntry.isHidden()) {
 	        	// skip in as the directories have already been treated
 	        } else {
 	        	
