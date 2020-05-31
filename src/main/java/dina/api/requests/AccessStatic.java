@@ -39,7 +39,7 @@ public class AccessStatic {
 		   if(file.isEmpty())
 			   return new ApiResponseCode(res, 400).getResponse();
 		   
-		   Path path = Paths.get("src/main/resources/public/"+file);
+		   Path path = Paths.get("public/"+file);
 		  
 		   if(!path.toFile().exists())
 			   return new ApiResponseCode(res, 404).getResponse();
