@@ -177,8 +177,7 @@ public class BarCoder {
 		int qrcode_version = -1;
 		String data_matrix_shape = "none";
 		String correction = null;	
-		
-		System.out.println(paraJSON);
+
 		
 		if(paraJSON.has("width")) 
 	   		width = (int) paraJSON.get("width");

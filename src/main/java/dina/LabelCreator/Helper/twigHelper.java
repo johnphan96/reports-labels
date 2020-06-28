@@ -4,16 +4,12 @@ import org.jtwig.environment.EnvironmentConfiguration;
 import org.jtwig.environment.EnvironmentConfigurationBuilder;
 import org.jtwig.functions.FunctionRequest;
 import org.jtwig.functions.SimpleJtwigFunction;
-import java.util.Date;
-import java.util.Locale;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
-
 import dina.BarCoder.BarCoder;
 import dina.LabelCreator.Options.Options;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class twigHelper {
@@ -259,11 +255,8 @@ public class twigHelper {
           
           JSONObject paraJSON = new JSONObject();
            if (request.getNumberOfArguments() == 4 /* Define number of arguments */ ) {
-    		// if (request.get(3) instanceof String) {
         	   	para = request.getEnvironment().getValueEnvironment().getStringConverter().convert(request.get(3));
-        	   	System.out.println("para: "+para);
         	   	paraJSON = JSONObject.fromObject(para);
-    		// }
            };
 
 	         //check at least the parameters width and height as they are mendatory
