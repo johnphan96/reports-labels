@@ -1,0 +1,8 @@
+tmp/*
+.classpath
+.settings/*
+.project
+target/*
+start_labels.bat
+private/*
+config.ini

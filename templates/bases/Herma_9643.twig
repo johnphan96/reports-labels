@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Herma 9643</title>
+    <!--link rel="stylesheet" type="text/css" href="general.css" title="Style" media="screen" /-->
+    <style>
+        
+      @page {
+        background: white;
+        font-family: Arial, sans-serif;
+        font-size: 7pt;
+        width: 210mm;
+    	height: 297mm;
+    	margin-top: 13.5mm;
+        margin-left: 0mm;
+        margin-bottom: 13mm;
+        margin-right: 0mm;
+      }
+            
+      html {
+        background-color: transparent;
+		min-width: 210mm;
+		min-height: 297mm;
+      }
+      body {
+        background-color: white;
+        font-family: Arial, sans-serif;
+        font-size: 7pt;
+        /*border: 1px solid black;*/
+        margin: 0;
+        padding: 0;
+        text-align: left;
+		width: 210mm;
+		height: 297mm;
+      }
+      
+      table { page-break-inside:auto }
+      tr    { page-break-inside:avoid; page-break-after:auto }
+	  
+	  table {
+		border: none;
+		border-collapse: collapse;
+		margin: 0;
+		padding: 0;
+		table-layout:fixed;
+   	  }
+	  
+	  td, th {
+		/*border: 1px blue dotted;*/
+		/*margin: 0;*/
+		padding: 0;
+		overflow: hidden;
+		text-overflow: "*";  /* attach star when text bigger than expected */
+    	white-space: nowrap;
+	  }
+	  
+	  table.maintable {
+	  	width: 178mm !important;
+		max-width: 178mm;
+		min-width: 178mm;
+		
+		/*height: 40mm !important;
+		max-height: 40mm;*/
+		
+		margin: 0;
+		margin-left: 16mm;
+		margin-right: 16mm;
+		padding: 0;
+		border-spacing: 0px 0px;
+		border-collapse: collapse; 
+		table-layout:fixed;
+		
+		page-break-inside:avoid;
+		page-break-after:always;
+		
+		/*border: 1px grey dashed;*/
+	  }
+	  
+	  td.coll-1 {
+		margin-left: 0mm;
+		margin-right: 18mm;
+	  }
+	  
+	  td.coll-2 {
+		margin-left: 0mm;
+		margin-right: 0mm;
+	  }
+	  
+	  td.coll-space {
+		width: 18mm;
+		max-width: 18mm;
+		min-width: 18mm;
+		padding:0;
+		margin:0;
+	  }
+	  
+	  table.maintable tr {
+	  	page-break-inside:avoid; 
+	  	page-break-after:auto;
+	  }
+	  
+	  tr.row-space {
+		margin:0;
+		paddin:0;
+		height: 6mm;
+		max-height: 6mm;
+		min-height: 6mm;
+	  }
+	  
+	  td.main {
+	    width: 80mm;
+		min-width: 80mm;
+		max-width: 80mm;
+		height: 40mm !important;
+	  	max-height: 40mm;
+	  	min-height: 40mm;
+	  	
+		/*border: 1px grey dashed;*/
+		border: none;
+		border-left: none;
+		border-top: none;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		word-wrap:break-word;
+		font-size: 7pt;
+		/*vertical-align: middle;*/
+	  }
+
+	{% block style %}{% endblock %}
+
+    </style>
+  </head>
+  <body>
+<!-- 
+{% set i = 0 %}
+{% set p = 0 %}
+{% set d = 0 %}
+{% set max = dataArray|length %}
+{% set cells = 2 %}
+{% set cellsPerPage = 12 %}
+
+-->
+<!-- {% for data in dataArray %}
+	{% if p == 0 %}  -->
+		<table class="maintable">
+		<tbody>
+<!--	{% endif %}
+
+	{% if i == 0 %} -->
+		<tr>
+			<td class="main coll-1">
+				{% block content %}
+					cell 1
+				{% endblock %}
+			</td>
+			<td class="coll-space">
+				{% block collspace %}
+					coll-space
+				{% endblock %}
+			</td>
+	<!-- {% else %} -->
+			<td class="main coll-2">
+				{% block content %}
+					cell 2
+				{% endblock %}
+			</td>
+<!--	{% endif %} -->
+	
+		
+ <!--   {% if i == cells-1 or p == cellsPerPage-1 or d == max-1 %} -->
+		</tr>
+		
+	 <!--   {% if p < cellsPerPage-1 %} -->		
+			<tr class="row-space">
+				<td colspan="3">
+				{% block rowspace %}
+					row-space
+				{% endblock %}
+				</td>
+			</tr>
+	 <!--   {% endif %} -->	
+		
+		
+<!--		{% set i = 0 %} 
+	{% else %}
+		{% set i = i+1 %}
+	{% endif %}
+-->	
+
+
+<!--	{% if p == cellsPerPage-1 or d == max-1 %} -->
+		</tbody></table>
+<!--		{% set p = 0 %}
+		{% set i = 0 %}
+	{% else %}
+		{% set p = p+1 %}
+	{% endif %}
+	
+	{% set d = d+1 %}
+		
+{% endfor %}
+-->
+  </body>
+</html>

@@ -2,14 +2,13 @@ package labels;
 
 import static spark.Spark.*;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.jetty.server.Server;
-
-import io.swagger.annotations.Api;
 import io.swagger.annotations.Contact;
 import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
@@ -17,14 +16,14 @@ import io.swagger.annotations.Tag;
 import spark.embeddedserver.EmbeddedServers;
 import spark.embeddedserver.jetty.EmbeddedJettyServer;
 import spark.embeddedserver.jetty.JettyHandler;
-import spark.embeddedserver.jetty.JettyServerFactory;
+import static spark.debug.DebugScreen.enableDebugScreen;
 import spark.http.matching.MatcherFilter;
 import spark.route.Routes;
 import spark.staticfiles.StaticFilesConfiguration;
-import dina.LabelCreator.LabelCreator;
 import dina.LabelCreator.Options.Options;
 import dina.TemplateCreator.TemplateCreator;
 import dina.api.SwaggerParser;
+import dina.api.requests.AccessStatic;
 import dina.api.requests.AccessTmp;
 import dina.api.requests.CreateHTML;
 import dina.api.requests.CreatePDF;
@@ -63,14 +62,31 @@ public class Main {
     	Options op = new Options();
     	op.setOptions(args);
     	//LabelCreator labels = new LabelCreator(op);
+
     	
     	staticFiles.location("/public");  // Static (web accessible) files (e.g. CSS files etc.) can be placed in src/main/resources/public 
+    	staticFiles.header("Access-Control-Allow-Origin", "*");  // static files can be accessed from anywhere
+    	staticFiles.header("Access-Control-Allow-Headers", "*");  // static files can be accessed from anywhere
     	
     	// any empty action will be redirected to the API documentation
     	redirect.any("/", "/labels/"+API_VERSION+"/");
     	redirect.any("/labels", "/labels/"+API_VERSION+"/");
     	redirect.any("/labels/", "/labels/"+API_VERSION+"/");	
-    	redirect.any("/labels/"+API_VERSION, "/labels/"+API_VERSION+"/");	
+    	redirect.any("/labels/"+API_VERSION, "/labels/"+API_VERSION+"/");
+    	
+    	options("/*", (req, res) -> {
+    		String accessControlRequestHeaders = req.headers("Access-Control-Request-Headers");
+    		if (accessControlRequestHeaders != null) {
+    			res.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+    		}
+
+    		String accessControlRequestMethod = req.headers("Access-Control-Request-Method");
+    		if (accessControlRequestMethod != null) {
+    			res.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+    		}
+
+            return "OK";
+    	});
     	
     	try {
 			// Build swagger json description
@@ -85,19 +101,23 @@ public class Main {
 			e.printStackTrace();
 		}
     	
-    	
-    	
     	// Routes other than default Swagger documentation
     	path("/labels", () -> {
     		path("/"+API_VERSION, () -> {
 	    		
+    			get("/static/*", (req, res) -> {
+    	    		
+  				  AccessStatic c = new AccessStatic(op, req, res);
+  		          return c.result();
+    			});
+    			
     			post("/", (req, res) -> {
     				
     				if(req.queryParams("template")==null || req.queryParams("template").isEmpty())
     				{	
     					//res.redirect("/labels/"+API_VERSION+"/template/choose", 303);
     					TemplateCreator tmpl = new TemplateCreator(op);
-			        	tmpl.baseURL = "http://"+req.host();
+			        	//tmpl.baseURL = "http://"+req.host();
 			        	tmpl.target = tmpl.baseURL+ req.pathInfo();
 			        	tmpl.origReq = req;
 			        	
@@ -106,6 +126,8 @@ public class Main {
     				else {
     					String format = req.queryParams("format");
     					String data = req.queryParams("data");
+    					//op.baseURL = "http://"+req.host() + req.pathInfo();
+    					//op.baseURL = op.baseURL + req.pathInfo();
     					
     					if(format==null || format.isEmpty())
     						format="html";
@@ -166,17 +188,25 @@ public class Main {
     			path("/template", () -> {
 			        get("/show", (req, res) -> {
 					   
+			        	res.header("Content-Type", "text/html");
+			        	
 			           if(req.queryParams("template")!=null)
 							op.templateFile = op.templateDir+"/"+req.queryParams("template");
+			           
+			           String html = "";
+			           File file = new File(op.templateFile);
+					   FileInputStream fis;
 						
-			     	   byte[] bytes = Files.readAllBytes(Paths.get(op.templateFile));         
-			            HttpServletResponse raw = res.raw();
-			
-			            raw.getOutputStream().write(bytes);
-			            raw.getOutputStream().flush();
-			            raw.getOutputStream().close();
-			            
-			            return res.raw();
+					    if(file.exists()) {
+							fis = new FileInputStream(file);
+						    byte[] data = new byte[(int) file.length()];
+							fis.read(data);
+						    fis.close();
+						    html = new String(data, "UTF-8");
+					    };
+					    res.body(html);
+					    
+					    return res.body();
 			        });
 			        
 			        get("/show/all", (req, res) -> {
@@ -201,6 +231,12 @@ public class Main {
 			            return res.raw();
 		        	
 		        });
+		        
+		        // TODO:  set option for configuring Allow-Origin through config.ini
+				before((req, res) -> {
+					res.header("Access-Control-Allow-Origin", "*");
+					res.header("Access-Control-Allow-Headers", "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,");
+				});
 		        
 		        // TODO: make template editable (e.g. with (static) implementation of WYSIWYG Aloha Editor (http://alohoeditor.org))
 		        // get("/template/edit", (req, res) -> {
@@ -231,6 +267,9 @@ public class Main {
 		        */
 	    	});
     	});
+    	
+    	if(op.debug)
+    		enableDebugScreen(); 
     }
     
     private static JettyHandler setupHandler(Routes routeMatcher, StaticFilesConfiguration staticFilesConfiguration, boolean hasMultipleHandler) {
