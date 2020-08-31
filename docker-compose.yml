@@ -1,0 +1,14 @@
+version: '2.0'
+
+services:
+    dina-labels:
+        image: dina-labels
+
+        ports:
+            - 7981:80
+        volumes:
+            - ./config.ini:/usr/local/dina-labels/config.ini
+            - ./templates:/usr/local/dina-labels/templates
+            - ./tmp:/usr/local/dina-labels/tmp
+            - ./public:/usr/local/dina-labels/public
+
