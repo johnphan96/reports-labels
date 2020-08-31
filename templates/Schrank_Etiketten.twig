@@ -1,4 +1,4 @@
-{% extends "bases/Herma_9643.twig" %}
+{% extends ".basis/Herma_9643.twig" %}
 
 {% block collspace %}{% endblock %}
 {% block rowspace %}{% endblock %}
@@ -61,17 +61,17 @@
 	
 	  }
 	  
-{% endblock %}
 
-{% block content %}
+{% endblock %}{% block content %}
 
 	<table class="subtable">
 		{% set filename = replace(data.code, '/', '_') %}
-		{% set qrcodePath = generateCode(data.NURI, filename , 'QR-Code') %}
+		{% set NURI = 'http://coll.mfn-berlin.de/u/' ~ data.code %}	
 		<tr>
-			<td class="sub subcode"><img class="qrcode" src="{{ qrcodePath }}" /></td>
-			<td class="sub">{{ replace(replace(data.NURI, '/u/', ' /u/'), '.mfn-', '. mfn-') }}</td>
+			<td rowspan="2" class="sub subcode"><img class="qrcode" src="{{ generateCode(NURI, filename , 'QR-Code') }}" /></td>
+			<td  class="sub NURI"><div>MfN URI</div></td>
 		</tr>
+		<tr><td class="sub number">{{ replace(replace(NURI, '://', '://<br/>'), '/u/', '/<br/>u/') }}</td></tr>
 	</table>
 
 {% endblock %}
