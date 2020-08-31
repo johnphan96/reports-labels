@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Mammalia Labels</title>
+    <!--link rel="stylesheet" type="text/css" href="general.css" title="Style" media="screen" /-->
+    <style>
+        
+      @page {
+        background: white;
+        font-family: Arial, sans-serif;
+        font-size: 7pt;
+        width: 210mm;
+    	height: 297mm;
+    	margin-top: 0mm;
+        margin-left: 0mm;
+        margin-bottom: 0mm;
+        margin-right: 10mm;
+      }
+            
+      html {
+        background-color: transparent;
+		min-width: 210mm;
+		min-height: 297mm;
+      }
+      body {
+        background-color: white;
+        font-family: Arial, sans-serif;
+        font-size: 7pt;
+		letter-spacing: 0pt;
+       /* border: 1px solid black;*/
+        margin: 0;
+		margin-left: 5mm;
+        padding: 0;
+        text-align: left;
+		width: 210mm;
+		height: 297mm;
+      }
+      
+      table { page-break-inside:auto }
+      tr    { page-break-inside:avoid; page-break-after:auto }
+	  
+	  table {
+		border: none;
+		border-collapse: collapse;
+		margin: 0;
+		padding: 0;
+   	  }
+	  
+	  td, th {
+		/*border: 1px blue dotted;*/
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		text-overflow: "*";  /* attach star when text bigger than expected */
+    	white-space: nowrap;
+	  }
+	  
+	  table.maintable {
+	  	width: 170mm !important;
+		max-width: 170mm;
+		min-width: 170mm;
+		
+		height: 49mm !important;
+		max-height: 49mm;
+		
+		margin: 0;
+		padding: 0;
+		border-spacing: 0px;
+		border-collapse: collapse; 
+		table-layout:fixed;
+		
+		page-break-inside:avoid;
+		page-break-after:always;
+	  }
+	  
+	  table.maintable tr {
+	  	page-break-inside:avoid; 
+	  	page-break-after:auto;
+	  }
+	  
+	  td.main {
+	    width: 85mm;
+		min-width: 85mm;
+		max-width: 85mm;
+		height: 49mm !important;
+	  	max-height: 49mm;
+	  	min-height: 49mm;
+	  	
+		border: 0.5px #EEEEEE dotted;
+		border-left: none;
+		border-top: none;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+		word-wrap:break-word;
+		font-size: 7pt;
+		/*vertical-align: middle;*/
+	  }
+	  
+	  td.col-1 {
+		margin-left: 0mm;
+		margin-right: 0mm;
+		padding: 0;
+	  }
+	  
+	  td.col-2 {
+		padding-left: 5mm;
+		padding-right: 0mm;
+	  }
+	  
+	  table.subtable {
+	  	/*border: 1px lightgrey solid;*/
+	  	width: 85mm;
+	  	margin: 0; 
+	  	margin-top: 3mm;
+	  }
+	  
+	  table.subtable table th{
+	  	font-weight: normal;
+	  	max-width: 17mm;
+	  	padding-bottom: 2px;
+	  	padding-right: 7px;
+	  }
+	  
+	  table.subtable table td{
+	  	font-weight: normal;
+	  	max-width: 50mm;
+	  	width: 50mm;
+	  	padding-bottom: 2px;
+	 	/*border: 1px blue dashed;*/
+	  }
+	   
+	  table.subtable td.left{
+	    width: 50mm;
+	  	max-width: 50mm;
+	  	min-width: 50mm;
+	  	
+	  	padding-left: 3mm;
+	  	padding-right: 2mm;
+	  	text-align: left;
+	  	vertical-align: top;
+	  }
+	  
+	  table.subtable td.center{
+	    width: 14mm;
+	  	max-width: 14mm;
+	  	min-width: 14mm;
+	  	padding: 0;
+	  }
+	 
+	  table.subtable td.right{
+	  	width: 4mm !important;
+	  	max-width: 4mm;
+	  	min-width: 4mm;
+	  	height: 4mm !important;
+	  	/*max-height: 44mm;
+	  	min-height: 44mm;*/
+	  	padding: 0;
+	  	padding-bottom: 1mm;
+	  	text-align: left;
+	  	vertical-align: bottom;
+	  	overflow: hidden;
+	  }
+	  
+	  table.subtable td.right div {
+	  	padding: 0;
+	  	margin: 0;
+	  	margin-bottom: 3mm;
+	  	width: 4mm;
+	  	/*overflow: hidden;*/
+	  	/*height: 4mm;*/
+	 	display: block;
+	 	transform: rotate(-90deg);
+	 	white-space: nowrap;
+	 	text-align: left;
+	 	font-size: 6px;
+	  }
+	  
+	  table.subtable tr.lastRow {
+	  	height: 12mm !important;
+	  	padding: 0;
+	  	margin: 0;
+	  }
+	  
+	  .taxon {
+	  	font-size: 11pt;
+	  	font-weight: bold;
+	  	font-style: italic;
+	  }
+	  
+	  .higherTaxon {
+	  	font-size: 11pt;
+	  	font-weight: bold;
+	  }
+	  
+	  .authorYear {
+	  	font-size: 7pt;
+	  	font-weight: normal;
+	  }
+	  
+	  .GIN {
+	  	max-height: 12mm;
+	  	padding: 0;
+	  	margin: 0;
+	  }
+	  
+	  .GIN-prefix {
+	  	font-size: 11pt;
+	  }
+	  .catalogNumber {
+	  	font-size: 25pt;
+	  	font-weight: bold;
+	  	letter-spacing: 2pt;
+	  }
+	  .dot {
+          height: 5mm;
+          width: 5mm;
+          border: 0.5px dotted grey;
+          border-radius: 50%;
+          display: inline-block;
+          margin-top: 5px;
+        }
+	  .qrcode {
+		width: 16mm;
+		height: 16mm;
+		border: none;
+		
+	  }
+	  #header {
+		/*position: absolute;*/
+		top: 0px; 
+		font-weight: bold;
+	  }
+    </style>
+  </head>
+  <body>
+<!--
+{% set i = 0 %}
+{% set p = 0 %}
+{% set d = 0 %}
+{% set max = dataArray|length %}
+{% set cells = 2 %}
+{% set cellsPerPage = 12 %}
+
+
+        {# Prepartion abbreviations #}
+        {% set prepAbbrev = {
+        	"Round skin" : 		"rd. skin",
+        	"Skeleton" : 		"skel.",
+        	"Skeleton parts" : 	"skel. parts",
+            "Skull fragment" : 	"skull frag.",
+            "Antlers" : 		"antl.",
+            "Skin mounted" : 	"skin mount.",
+            "Skeleton mounted":	"skel. mount.",
+            "Mounted" : 		"mount.",
+            "DNA sample" : 		"DNA",
+            "Alcohol" : 		"alc.",
+            "Mandible" : 		"mand."
+        	} 
+        %}
+        
+        {# Age abbreviations #}
+        {% set ageAbbrev = {
+            "adult": 		"ad.",
+            "embryo": 		"embr.",
+            "fetus": 		"fet.",
+            "juvenilis":	"juv.",
+            "neonate": 		"neon.",
+            "neonates": 	"neon.",
+            "pullus": 		"pull.",
+            "senilis": 		"sen.",
+            "subadult": 	"subad."
+        	}
+        %}
+
+-->
+	{% for data in dataArray %}
+		{% if p == 0 %}
+			<table class="maintable">
+			<tbody>
+		{% endif %}
+		{% if i == 0 %}
+			<tr>
+		{% endif %}  
+<!--
+		{# Rules for QR codes #}
+    		{% set filename = replace(data.reservedText, '/', '_') %}
+    		{% if (data.reservedText is defined) and (data.reservedText is not empty) and (data.reservedText is not null) %}
+    		    {% set qrImage = generateCode('http://coll.mfn-berlin.de/u/'~ data.reservedText, filename , 'QR-Code') %}
+    		{% endif %}
+		
+		{# Some taxon rules #}
+			{% set taxonStyle = 'taxon' %}
+    		{% if (data.Genus|length) and (data.Genus is not empty) and (data.Genus is not null) %}
+    			{% set taxon = data.Genus %}
+    			{% if (data.Species|length) and (data.Species is not empty) and (data.Species is not null) %}
+    				{% set taxon = taxon ~ ' ' ~ data.Species %}
+    				{% if (data.Subspecies|length) and (data.Subspecies is not empty) and (data.Subspecies is not null) %}
+    				    {% set taxon = taxon ~ ' ' ~ data.Subspecies %}
+    				{% endif %}
+    			{% endif %}
+    		{% else %}
+			    {% set taxonStyle = 'higherTaxon' %}
+    			{% if (data.Family is not empty) and (data.Family is not null) %}
+        			    {% set taxon = data.Family %}
+    			{% elseif (data.Order is not empty) and (data.Order is not null) %}
+    				{% set taxon = data.Order %}
+    			{% elseif (data.Class is not empty) and (data.Class is not null) %}
+    				{% set taxon = data.Class %}
+        		{% else %}
+        			{% set taxon = '' %}
+        		{% endif %}
+    		{% endif %}
+		
+		
+		{# Some date rules #}
+			{% set date = '' %}
+			{% if ((data.startDate is not defined) or (data.startDate is null) or (data.startDate is empty)) 
+			    and ((data.endDate is not defined) or (data.endDate is null) or (data.endDate is empty)) %}
+        			{% set date = data.dateAccessioned %}
+        			{% set dateType = 'Date of entry' %}
+    		{% else %}
+    			{% set dateType = 'Coll. date' %}
+    			{% if (data.endDate|length) and (data.endDate is defined) and (data.endDate is not null) and (data.endDate is not empty) %}
+        			{% set date = data.startDate ~ '-' ~ data.endDate %}
+        		{% else %}
+        			{% set date = data.startDate %}
+        		{% endif %}
+        	{% endif %}
+        	{% if ((data.startDate is not defined) or (data.startDate is null) or (data.startDate is empty)) 
+        	    and ((data.dateAccessioned is not defined) or (data.dateAccessioned is null) or (data.dateAccessioned is empty)) 
+        	    and ((data.endDate is not defined) or (data.endDate is null) or (data.endDate is empty)) %}
+        		    {% set dateType = 'Coll. date' %}
+        	{% endif %}
+        	
+        {# Prepartion rule #}
+        	{% if (prepAbbrev[data.name] is not defined) or (prepAbbrev[data.name] is empty) or (prepAbbrev[data.name] is null) %}
+        		{% set preparation = lower(data.name) %}
+        	{% else %}
+        		{% set preparation = prepAbbrev[data.name] %}
+        	{% endif %}
+        
+        {# Merge sex and age #}
+    		{% if (data.text8 is not null) or (data.text8 is not empty) %}
+    			{% set sex = data.text8 %}
+    		{% endif %}
+    		{% if (data.text7 is not null) and (data.text7 is not empty) %}
+    			{% if (ageAbbrev[data.text7] is not defined) or (ageAbbrev[data.text7] is empty) or (ageAbbrev[data.text7] is null) %}
+    			    {% set age = lower(data.text7) %}
+    			{% else %}
+    				{% set age = ageAbbrev[data.text7] %}
+    			{% endif %}
+    		{% endif %}
+    		{% if (age is not empty) and (age is defined) and (age is not null) and (sex is not empty) and (sex is defined) and (sex is not null) %}
+    			{% set sex_age = sex ~ ', ' ~ age %}
+    		{% elseif age is empty %}
+    		    {% set sex_age = null2empty(sex) %}
+    		{% elseif sex is empty %}
+    		    {% set sex_age = null2empty(age) %}
+    		{% else %}
+    			{% set sex_age = '' %}
+    		{% endif %}
+    		
+		{# Collector and Donor #}
+			{% set CollectorDonor = null %}
+			{% set CollectorDonorType = 'Collector' %}
+			{% if data.collectors|length %}
+				{% set CollectorDonorArray = data.collectors|split(';') %}
+				{% if CollectorDonorArray|length %}
+					{% for CD in CollectorDonorArray %}
+						{% set CDArray = CD|split(',') %}
+						{% set x = 0 %}
+						{% if CDArray|length %}
+							{% for CDlastname in CDArray %}
+								{% if CDlastname|length %}
+									{% if x < 1 %}
+										{% if CollectorDonor is null %}
+											{% set CollectorDonor = CDlastname   %}
+										{% else %}
+											{% set CollectorDonor = CollectorDonor ~ '; ' ~ CDlastname   %}
+										{% endif %}	
+									{% endif %}	
+									{% set x = x+1 %}
+								{% endif %}	
+							{% endfor %}
+						{% else %}
+							{% if CollectorDonor is null %}
+								{% set CollectorDonor = CD  %}
+							{% else %}
+									{% set CollectorDonor = CollectorDonor ~ '; ' ~ CD   %}
+							{% endif %}	
+						{% endif %}	
+					{% endfor %}
+				{% else %}
+					{% set CDArray = data.collectors|split(',') %}
+					{% set x = 0 %}
+					{% if CDArray|length %}
+						{% for CDlastname in CDArray %}
+							{% if CDlastname|length %}
+								{% if x < 1 %}
+									{% if CollectorDonor is null %}
+										{% set CollectorDonor = CDlastname  %}
+									{% else %}
+										{% set CollectorDonor = CollectorDonor ~ '; ' ~ CDlastname  %}
+									{% endif %}	
+								{% endif %}	
+								{% set x = x+1 %}
+							{% endif %}
+						{% endfor %}							
+					{% else %}
+						{% if CollectorDonor is null %}
+							{% set CollectorDonor = data.collectors   %}
+						{% else %}
+								{% set CollectorDonor = CollectorDonor ~ '; ' ~ data.collectors  %}
+						{% endif %}
+					{% endif %}
+				{% endif %}
+			{% endif %}
+			
+			{% if CollectorDonor is empty %}
+				{% set CollectorDonorType = 'Donor' %}
+				{% if data.accessionAgents|length %}
+					{% set CollectorDonorArray = data.accessionAgents|split(';') %}
+					{% if CollectorDonorArray|length %}
+						{% for CD in CollectorDonorArray %}
+							{% set CDArray = CD|split(',') %}
+							{% set x = 0 %}
+							{% if CDArray|length %}
+								{% for CDlastname in CDArray %}
+									{% if CDlastname|length %}
+										{% if x < 1 %}
+											{% if CollectorDonor is null %}
+												{% set CollectorDonor = replace(replace(CDlastname, ' - donor',''), ' - Vendor','') %}
+											{% else %}
+												{% set CollectorDonor = CollectorDonor ~ '; ' ~ replace(replace(CDlastname, ' - donor',''), ' - Vendor','') %}
+											{% endif %}	
+										{% endif %}	
+										{% set x = x+1 %}	
+									{% endif %}
+								{% endfor %}
+							{% else %}
+								{% if CollectorDonor is null %}
+									{% set CollectorDonor = replace(replace(CD, ' - donor',''), ' - Vendor','') %}
+								{% else %}
+										{% set CollectorDonor = CollectorDonor ~ '; ' ~ replace(replace(CD, ' - donor',''), ' - Vendor','') %}
+								{% endif %}	
+							{% endif %}	
+						{% endfor %}
+					{% else %}
+						{% set CDArray = data.accessionAgents|split(',') %}
+						{% set x = 0 %}
+						{% if CDArray|length %}
+							{% for CDlastname in CDArray %}
+								{% if CDlastname|length %}
+									{% if x < 1 %}
+										{% if CollectorDonor is null %}
+											{% set CollectorDonor = replace(replace(CDlastname, ' - donor',''), ' - Vendor','') %}
+										{% else %}
+											{% set CollectorDonor = CollectorDonor ~ '; ' ~ replace(replace(CDlastname, ' - donor',''), ' - Vendor','') %}
+										{% endif %}	
+									{% endif %}	
+									{% set x = x+1 %}
+								{% endif %}
+							{% endfor %}							
+						{% else %}
+							{% if CollectorDonor is null %}
+								{% set CollectorDonor = replace(replace(data.accessionAgents, ' - donor',''), ' - Vendor','') %}
+							{% else %}
+									{% set CollectorDonor = CollectorDonor ~ '; ' ~ replace(replace(data.accessionAgents, ' - donor',''), ' - Vendor','') %}
+							{% endif %}
+						{% endif %}
+					{% endif %}
+				{% endif %}
+			{% endif %}
+			
+			{% if CollectorDonor is null %}
+				{% set CollectorDonorType = 'Collector' %}
+			{% endif %}
+			
+			
+			{% set columnClass = 'col-' ~ (i+1) %}
+-->		
+		<td class="main {{ columnClass }}">
+			<table class="subtable">
+				<tr>
+					<td class="left" colspan="2"><div><span class="{{ taxonStyle }}">{{ taxon }}</span> <span class="authorYear">{{ null2empty(data.author) }}</span></div></td>
+					<td class="right" rowspan="3"><div>http://coll.mfn-berlin.de/u/{{ data.reservedText }}</div></td>
+				</tr>
+				<tr><td class="left">
+						<br/>
+    					<table class="data">
+        					<tr><th>Prep.:</th><td>{{ preparation }}</td></tr>
+        					<tr><th>Sex, Age:</th><td>{{ null2empty(sex_age)|lower }}</td></tr>
+        					<tr><th>Locality:</th><td>{{ null2empty(data.localityName) }}</td></tr>
+        					<tr><th>Country:</th><td>{{ null2empty(data.Country) }}</td></tr>
+        					<tr><th>{{ CollectorDonorType }}:</th><td>{{ null2empty(CollectorDonor) }}</td></tr>
+        					<tr><th>{{ dateType }}:</th><td>{{ null2empty(date) }}</td></tr>
+    					</table>
+					</td>
+					<td class="center" align="center" valign="top"><span class="dot"></span></td>
+					
+				</tr>
+				<tr class="lastRow">
+					<td class="left"><br/><div class="GIN"><span class="GIN-prefix">ZMB_Mam_</span><span class="catalogNumber">{{ ireplace(data.catalogNumber, 'ZMB_MAM_', '')|null2empty }}</span></div></td>
+					
+					<td class="center" align="right"><img class="qrcode" src="{{ qrImage }}"/></td>
+					
+				</tr>
+			</table>
+		</td>
+		
+		
+    {% if i == cells-1 or p == cellsPerPage-1 or d == max-1 %}
+		</tr>
+		{% set i = 0 %}
+	{% else %}
+		{% set i = i+1 %}
+	{% endif %}
+	
+	{% if p == cellsPerPage-1 or d == max-1 %}
+		</tbody></table>
+		{% set p = 0 %}
+		{% set i = 0 %}
+	{% else %}
+		{% set p = p+1 %}
+	{% endif %}
+	
+	{% set d = d+1 %}
+		
+{% endfor %}
+  </body>
+</html>

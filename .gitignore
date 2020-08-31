@@ -5,3 +5,4 @@ tmp/*
 target/*
 start_labels.bat
 private/*
+config.ini
