@@ -66,7 +66,7 @@
 
 	<table class="subtable">
 		{% set filename = replace(data.code, '/', '_') %}
-		{% set NURI = 'http://coll.mfn-berlin.de/u/' ~ data.code %}	
+		{% set NURI = 'http://example.org/u/' ~ data.code %}	
 		<tr>
 			<td rowspan="2" class="sub subcode"><img class="qrcode" src="{{ generateCode(NURI, filename , 'QR-Code') }}" /></td>
 			<td  class="sub NURI"><div>MfN URI</div></td>
