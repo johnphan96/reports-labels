@@ -37,5 +37,43 @@ The folders `templates` and `sample_data` in this repo contain two examples:
 * ___Mammalia_labels___ is a complex template with corresponding data for collection objects from the MfN mammals collection.
 
 
+Generating Template
+===
+(_To be completed_)
+
+### Specific Twig Functions
+
+#### generateCode
+___@Function___: _`generateCode(data, filename, format, [parameters])`_
+
+___@Description___: _Creates barcodes, QR codes and data matrixes on the fly_<br/>
+___@Parameters___:
+
+| Parameter 	| Sub-Parameter			| Description                                                                                                                	| Data Type   	| allowed values                        	| default value               	| optional 	|
+|------------	|-------------------	|----------------------------------------------------------------------------------------------------------------------------	|-------------	|---------------------------------------	|-----------------------------	|----------	|
+| data       	|                   	| the string to be encoded                                                                                                   	| string      	| any string                            	|                             	| no       	|
+| filename   	|                   	| name of the image file for the code                                                                                        	| string      	| any string                            	|                             	| no       	|
+| format     	|                   	| set the type of encoding                                                                                                   	| string      	| QR-Code = QR<br>Barcode<br>DataMatrix 	|                             	| no       	|
+| parameters 	|                   	| pass parameters directly to the zxing library for encoding                                                                 	| JSON object 	| (specified below)                     	|                             	| yes      	|
+|            	| width             	| width of the image in pixels                                                                                               	| integer     	|                                       	| 600                         	| yes      	|
+|            	| height            	| heigh of the image in pixels                                                                                               	| integer     	|                                       	| 600                         	| yes      	|
+|            	| margin            	| margin added to the edges within the image                                                                                 	| integer     	|                                       	| _(library default)_           	| yes      	|
+|            	| qrcode_version    	| version of the QR code  (only applied if format=QR)                                                                        	| integer     	|                                       	| _(library default)_           	| yes      	|
+|            	| correction        	| correction level  for the codes (L = ~7%, M = ~15%, Q = ~25%, H = ~30%)	| enum        	| L<br>M <br>Q<br>H                     	| _(library default)_           	| yes      	|
+|            	| data_matrix_shape 	| force the shape of the data matrix  (only applied if format=DataMatrix)                                                    	| enum        	| square<br>rectangle<br>none           	| _(depends on width x height)_ 	| yes      	|
+
+___@Return value___: _Returns the filename of the generated (temporary) file to be used in HTML_
+
+___@Example___: 
+```
+{% set qr_code_file = generateCode('http://example.org/123', 'myExample', 'QR', '{ width: 50, height: 50, margin: 3 }')  %}
+{% set datamatrix_file = generateCode('http://example.org/123', 'myExample', 'DataMatrix', '{ data_matrix_shape: \'rectangle\' }')  %}
+{% set barcode_file = generateCode('http://example.org/123', 'myExample', 'Barcode')  %}
+
+<img src="{{ qr_code_file }}"><br/>
+<img src="{{ datamatrix_file }}"><br/>
+<img src="{{ barcode_file }}"><br/>
+``` 
+
 
  
