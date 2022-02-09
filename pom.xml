@@ -120,12 +120,6 @@
 			<artifactId>openhtmltopdf-slf4j</artifactId>
 			<version>${openhtml.version}</version>
 		</dependency>
-		<dependency>
-			<!-- Optional, leave out if you do not need logging via log4j. -->
-			<groupId>com.openhtmltopdf</groupId>
-			<artifactId>openhtmltopdf-log4j</artifactId>
-			<version>1.0.1</version>
-		</dependency>
 
 		<dependency>
 			<!-- Optional, leave out if you do not SVG support. -->
