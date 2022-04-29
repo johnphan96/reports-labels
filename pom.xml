@@ -86,6 +86,13 @@
 	        <version>5.58</version>
    		</dependency>
 
+		<!--  Required for Java >= 9 -->
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+
 		<dependency>
 			<!-- ALWAYS required. -->
 			<groupId>com.openhtmltopdf</groupId>
