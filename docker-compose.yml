@@ -2,7 +2,7 @@ version: '2.0'
 
 services:
     dina-labels:
-        image: dina-labels
+        image: mfnberlin/dina-reports-labels:dev2
 
         ports:
             - 7981:80
